@@ -19,6 +19,8 @@ use App\Http\Controllers\Middle\ComproApiController;
 use App\Http\Controllers\PartnerAsuransiController;
 use App\Http\Controllers\PromoController;
 use App\Models\LayananUnggulan;
+use App\Http\Controllers\Admin\AboutusController;
+use App\Http\Controllers\Compro\AboutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,12 +52,18 @@ Route::prefix('blog')->group(function () {
     Route::get('/details/{slug}', [HomeController::class, 'blogDetails'])->name('blog.details');
 });
 
+Route::prefix('about')->group(function () {
+    Route::get('/{slug}', [HomeController::class, 'aboutDetails'])->name('about.details');
+});
+
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
 Route::get('/karir-info',[KarirController::class,'index'])->name('karir');
 Route::post('/karir/get-all-data', [AdminKarirController::class, 'getAllData'])->name('karir.admin.getAllData');
 Route::get('/post/{id}', [PostController::class, 'index'])->name('post');
 
 Route::get('/promo/{slug}', [PromoController::class, 'promotion'])->name('promotion');
+
+Route::get('/abt/{id}', [AboutController::class, 'index'])->name('abt');
 
 Route::get('/layanan-unggulan/{id}', [HomeController::class, 'layananDetail'])->name('layananDetail');
 
@@ -68,6 +76,7 @@ Route::get('/get-dokter-api', [ComproApiController::class, 'getDokter'])->name('
 Route::get('/get-dokter-jadwal-api', [ComproApiController::class, 'getJadwal'])->name('get.dokter.jadwal.api');
 Route::get('/get-filter-dokter-jadwal-api/{hari}', [ComproApiController::class, 'getJadwalFilter'])->name('get.filter.jadwal.api');
 Route::get('/get-postingan-api', [ComproApiController::class, 'getPostingan'])->name('get.postingan.api');
+Route::get('/get-aboutus-api', [ComproApiController::class, 'getAboutus'])->name('get.aboutus.api');
 
 Route::prefix('dokter')->group(function() {
     Route::get('/jadwal/hari-ini/{hari}', [DokterController::class,'infoJadwalHariIni']);
@@ -136,6 +145,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/getBerita', [PostinganController::class, 'getDataBerita'])->name('getBerita');
         });
 
+        Route::prefix('aboutus')->group(function() {
+            Route::get('/', [AboutusController::class, 'index'])->name('aboutus');
+            Route::get('/create', [AboutusController::class, 'create'])->name('aboutus.create');
+            Route::get('/edit/{id}', [AboutusController::class, 'edit'])->name('aboutus.edit');
+            Route::post('/store', [AboutusController::class, 'store'])->name('aboutus.store');
+            Route::put('/update', [AboutusController::class, 'update'])->name('aboutus.update');
+            Route::post('/delete', [AboutusController::class, 'delete'])->name('aboutus.delete');
+
+            Route::get('/getAboutus', [AboutusController::class, 'getDataAboutus'])->name('getAboutus');
+        });
+
         Route::prefix('karir')->group(function() {
             Route::get('/', [AdminKarirController::class, 'index'])->name('karir.admin');
             Route::get('/create', [AdminKarirController::class, 'create'])->name('karir.admin.create');
@@ -192,6 +212,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::post('/upload', [PostinganController::class, 'upload'])->name('ckeditor.upload');
+    Route::post('/upload', [AboutusController::class, 'upload'])->name('ckeditor.upload');
 });
 
 // Route::middleware(['auth'])->group(function () {

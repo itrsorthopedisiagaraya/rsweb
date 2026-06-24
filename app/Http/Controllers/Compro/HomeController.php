@@ -9,6 +9,7 @@ use App\Models\Admin\Postingan;
 use App\Models\LayananMedis;
 use App\Models\LayananUnggulan;
 use App\Models\Promo;
+use App\Models\Admin\Aboutus;
 use App\Models\TempDaftarBerobat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class HomeController extends Controller
         $promo = Promo::all();
         $berita = Postingan::with("kategori")->get();
         $layanan = LayananUnggulan::all();
-        // dd($spesialis);
+        // dd($aboutus);
         $dokter = Dokter::getAllWithJadwal();
         return view ('compro.index', [
             'dokter' => $dokter,
@@ -77,6 +78,14 @@ class HomeController extends Controller
             'kategori' => $kategori,
             'recent' => $recent
         ]);
+    }
+
+    public function aboutDetails ($slug){
+        $data = Aboutus::where('slug', $slug)->first();
+        return view ('compro.post.aboutus', [
+            'data' => $data
+        ]);
+        dd($data);
     }
 
     public function contact (){

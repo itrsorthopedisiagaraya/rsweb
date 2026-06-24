@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Middle;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Dokter;
 use App\Models\Admin\Postingan;
+use App\Models\Admin\Aboutus;
 use Illuminate\Http\Request;
 
 class ComproApiController extends Controller
@@ -30,6 +31,12 @@ class ComproApiController extends Controller
     public function getPostingan() 
     {
         $data = Postingan::all();
+        return response()->json($data);
+    }
+
+    public function getAboutus() 
+    {
+        $data = Aboutus::all();
         return response()->json($data);
     }
 }

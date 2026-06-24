@@ -15,4 +15,9 @@ if(!function_exists('breadcrumbs')) {
         $partner = PartnerAsuransi::all();
         return $partner;
     }
+
+    function getAboutus() {
+        $aboutus = \App\Models\Admin\Aboutus::all();
+        return $aboutus;
+    }
 }

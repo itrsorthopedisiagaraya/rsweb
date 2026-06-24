@@ -4,6 +4,7 @@
 // this import. This is nice for IDE syntax and refactoring.
 
 use App\Models\Admin\Postingan;
+use App\Models\Admin\Aboutus;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
@@ -64,6 +65,12 @@ Breadcrumbs::for('dashboard_postingan', function (BreadcrumbTrail $trail) {
     $trail->push('Postingan', route('postingan'));
 });
 
+// home > aboutus
+Breadcrumbs::for('dashboard_aboutus', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Tentang Kami', route('aboutus'));
+});
+
 // home > karir
 Breadcrumbs::for('dashboard_karir', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
@@ -74,6 +81,12 @@ Breadcrumbs::for('dashboard_karir', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('dashboard_postingan_create', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard_postingan');
     $trail->push('Tambah', route('postingan.create'));
+});
+
+// home > aboutus > create
+Breadcrumbs::for('dashboard_aboutus_create', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard_aboutus');
+    $trail->push('Tambah', route('aboutus.create'));
 });
 
 // home > karir > create

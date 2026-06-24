@@ -1,4 +1,5 @@
 @php $partner = getPartner() @endphp
+@php $aboutus = getAboutus() @endphp
 
 @php
     $chunksDesktop = $partner->chunk(18); // 18 items per slide desktop
@@ -97,7 +98,7 @@
 <footer class="page-footer">
     <div class="container">
         <div class="row px-md-3">
-            <div class="col-sm-6 col-lg-4 py-3 d-flex flex-column align-items-center">
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
                 <ul class="footer-menu">
                     <div class="logo-wrapper">
                         <img src="{{ asset('assets/images/logos/logo.png') }}" alt="logo" width="250">
@@ -114,7 +115,18 @@
                     </div>
                 </ul>
             </div>
-            <div class="col-sm-6 col-lg-4 py-3 d-flex flex-column align-items-center">
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
+                <ul class="footer-menu">
+                    <li>
+                        <h5>Tentang Kami</h5>
+                    </li>
+                    {{-- <li><a href="{{ route('sambutan') }}">Sambutan Direktur</a></li> --}}
+                    @foreach ($aboutus as $item)
+                        <li><a href="{{ route('about.details', $item->slug) }}">{{ $item->judul }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
                 <ul class="footer-menu">
                     <li>
                         <h5>LAINNYA</h5>
@@ -123,7 +135,7 @@
                     <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
                 </ul>
             </div>
-            <div class="col-sm-6 col-lg-4 py-3 d-flex flex-column align-items-center">
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
                 <ul class="footer-menu">
                     <li>
                         <h5>KONTAK</h5>
