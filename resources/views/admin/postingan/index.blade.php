@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-{{ Breadcrumbs::render('dashboard_postingan') }}
+    {{ Breadcrumbs::render('dashboard_postingan') }}
 @endsection
 
 @section('content')
@@ -30,18 +30,19 @@
                 processing: true,
                 serverSide: true,
                 ajax: `{{ route('getBerita') }}`,
-                columns: [
-                    {
-                        render: function (data, type, row, meta) {
+                columns: [{
+                        render: function(data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         },
                     },
                     {
                         render: function(data, type, row, meta) {
-                            return `<img width="100" src="{{ asset('') }}files/gambar_postingan/banner/${row.gambar}" alt="gambar">`;
+                            return `<img width="100" src="{{ asset('storage') }}/files/gambar_postingan/banner/${row.gambar}" alt="gambar">`;
                         }
                     },
-                    { data: 'judul' },
+                    {
+                        data: 'judul'
+                    },
                     {
                         render: function(data, type, row, meta) {
                             var url = `{{ route('post', ':id') }}`;
@@ -51,9 +52,11 @@
                                     </a>`;
                         }
                     },
-                    { data: 'status' },
                     {
-                        "render": function ( data, type, row ) {
+                        data: 'status'
+                    },
+                    {
+                        "render": function(data, type, row) {
                             var url = `{{ route('postingan.edit', ':id') }}`;
                             url = url.replace(':id', row.id);
                             return `<button type="button" class="btn btn-danger btn-sm user-delete" data-id="${row.id}">Delete</button>
@@ -64,10 +67,10 @@
             });
 
             // confirm delete with sweetalert
-            $(document).on('click', '.user-delete', function (e) { 
+            $(document).on('click', '.user-delete', function(e) {
                 e.preventDefault();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                
+
                 Swal.fire({
                     title: 'Apakah anda yakin?',
                     text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -84,18 +87,21 @@
 
                         // Kirim permintaan AJAX untuk menghapus data
                         $.ajax({
-                            url: '{{ route("postingan.delete") }}',
+                            url: '{{ route('postingan.delete') }}',
                             method: 'POST',
-                            data: { 
+                            data: {
                                 _token: csrfToken,
-                                id: postId 
-                            }, 
+                                id: postId
+                            },
                             success: function(res) {
                                 dataTable.ajax.reload(null, false);
-                                Swal.fire('Berhasil!', 'Berita berhasil dihapus.', 'success');
+                                Swal.fire('Berhasil!', 'Berita berhasil dihapus.',
+                                    'success');
                             },
                             error: function(xhr, status, error) {
-                                Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data.', 'error');
+                                Swal.fire('Error!',
+                                    'Terjadi kesalahan saat menghapus data.',
+                                    'error');
                             }
                         });
                     }
