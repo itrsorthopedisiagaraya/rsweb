@@ -131,16 +131,15 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown" id="nav-item-about">
+                    {{-- <li class="nav-item dropdown" id="nav-item-about">
                         <span class="nav-link dropdown-toggle" id="nav-link-about">Tentang Kami</span>
-                        {{-- <a class="nav-link dropdown-toggle" id="nav-link-dokter" href="#">Dokter </a>  --}}
                         <div class="about-dropdown">
                             <ul>
                                 <li><a href="{{ route('about') }}">Profil</a></li>
                                 <li><a href="{{ route('sambutan') }}">Sambutan</a></li>
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contact') }}">Kontak</a>
