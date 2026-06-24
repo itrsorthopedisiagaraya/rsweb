@@ -112,7 +112,7 @@
                                 @foreach ($recent as $rc)
                                     <div class="blog-item">
                                         <a class="post-thumb" href="">
-                                            <img src="{{ asset('') }}files/gambar_postingan/banner/{{ $rc->gambar }}"
+                                            <img src="{{ asset('storage') }}/files/gambar_postingan/banner/{{ $rc->gambar }}"
                                                 alt="">
                                         </a>
                                         <div class="content">
