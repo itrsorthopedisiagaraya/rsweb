@@ -28,7 +28,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="nip" class="form-label">Gambar Utama</label>
-                    <input type="file" class="form-control" name="gambar_postingan">
+                    <input type="file" class="form-control" name="gambar_aboutus">
                 </div>
             </div>
             <div class="col-12">
