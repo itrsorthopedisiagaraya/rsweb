@@ -76,32 +76,38 @@ class PromoController extends Controller
     public function update(Request $request)
     {
         $id = $request->id;
-        // get data by id
         $data = Promo::find($id);
-        // get gambar
-        if($request->hasFile('gambar')) {
-            // delete gambar lama 
-            $old_pict = $data->gambar;
-            if(file_exists(upload_path('files/gambar_promo/banner/'.$old_pict))) {
-                unlink(upload_path('files/gambar_promo/banner/'.$old_pict));
-            }
-
-            // upload gambar baru
-            $file = $request->file('gambar_promo');
+    
+        $file_name = $data->gambar;
+    
+        if ($request->hasFile('gambar')) {
+    
+            $file = $request->file('gambar'); // FIX: samakan dengan store
             $extension = $file->getClientOriginalExtension();
-            $file_name = 'post_banner_'.time().'.'.$extension;
-            $file->move(upload_path('files/gambar_promo/banner'), $file_name);
-        } else {
-            $file_name = $data->gambar;
+            $file_name = 'promo_' . time() . '.' . $extension;
+    
+            $uploadPath = upload_path('files/gambar_promo/');
+    
+            // hapus file lama (SAFE CHECK)
+            if ($data->gambar) {
+                $oldPath = $uploadPath . $data->gambar;
+    
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
+    
+            // upload baru
+            $file->move($uploadPath, $file_name);
         }
-
+    
         $data->judul = $request->promo;
         $data->slug = $request->slug;
         $data->gambar = $file_name;
         $data->konten = $request->konten;
         $data->deadline = $request->deadline;
         $data->save();
-
+    
         return redirect()->route('listPromo')->with([
             'message' => 'Data berhasil diubah!',
         ]);
@@ -109,7 +115,21 @@ class PromoController extends Controller
 
     public function destroy($id)
     {
-        Promo::find($id)->delete();
+        $promo = Promo::find($id);
+    
+        if ($promo) {
+    
+            $filePath = upload_path('files/gambar_promo/') . $promo->gambar;
+    
+            // hapus file jika ada
+            if ($promo->gambar && file_exists($filePath) && is_file($filePath)) {
+                @unlink($filePath);
+            }
+    
+            // hapus data DB
+            $promo->delete();
+        }
+    
         return redirect()->back()->with([
             'message' => 'Data berhasil dihapus!'
         ]);
