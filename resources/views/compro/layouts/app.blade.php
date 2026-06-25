@@ -183,6 +183,21 @@
 
 
         /*end coroulsel*/
+
+        /* img on tentang kami */
+        .aboutus-details .post-thumb img {
+            width: 100%;
+        }
+
+        .aboutus-details .post-thumb {
+            position: relative;
+            display: block;
+            margin: 0 auto 32px;
+            width: 80%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(154, 159, 151, 0.3);
+        }
     </style>
 </head>
 
