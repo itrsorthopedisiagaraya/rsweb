@@ -41,8 +41,8 @@
                         render: function(data, type, row, meta) {
                             if (!data || String(data).trim() === '') {
                                 return `<span class="text-muted fst-italic">No image</span>`;
-                            }
-                            return `<img width="100" src="{{ asset('storage') }}/files/gambar_aboutus/banner/${row.gambar}" alt="gambar">`;
+                            }                            
+			                    return `<img width="100" src="{{ asset('') }}files/gambar_aboutus/${row.gambar}" alt="gambar">`;
                         }
                     },
                     {

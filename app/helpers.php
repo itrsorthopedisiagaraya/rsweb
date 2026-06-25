@@ -2,10 +2,17 @@
 
 use App\Models\PartnerAsuransi;
 
-if(!function_exists('upload_path')) {
-    function upload_path($dir) {
-        // $path = '/home/rsorthop/public_html/' . $dir; // server
-        $path = public_path($dir); // local
+if (!function_exists('upload_path')) {
+    function upload_path($dir)
+    {
+        $path = file_exists(base_path('../public_html'))
+            ? base_path('../public_html/' . ltrim($dir, '/'))
+            : public_path($dir);
+
+        if (!is_dir($path)) {
+            mkdir($path, 0755, true);
+        }
+
         return $path;
     }
 }
@@ -15,7 +22,7 @@ if(!function_exists('breadcrumbs')) {
         $partner = PartnerAsuransi::all();
         return $partner;
     }
-
+    
     function getAboutus() {
         $aboutus = \App\Models\Admin\Aboutus::all();
         return $aboutus;

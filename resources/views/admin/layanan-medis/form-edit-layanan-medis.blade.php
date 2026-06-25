@@ -30,7 +30,7 @@
             <div class="col-12">
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Isi konten</label>
-                    <textarea id="editor" name="konten">{!! $data->konten !!}</textarea>
+                    <textarea id="editor1" name="konten">{!! $data->konten !!}</textarea>
                 </div>
             </div>
         </div>

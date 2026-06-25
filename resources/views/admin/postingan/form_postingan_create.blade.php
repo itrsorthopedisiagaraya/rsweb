@@ -43,7 +43,7 @@
             <div class="col-12">
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Isi Konten</label>
-                    <textarea id="editor" name="konten"></textarea>
+                    <textarea id="editor1" name="konten"></textarea>
                 </div>
             </div>
         </div>

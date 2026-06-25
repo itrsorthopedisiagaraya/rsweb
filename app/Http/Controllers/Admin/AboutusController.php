@@ -36,38 +36,25 @@ class AboutusController extends Controller
     // upload
     public function upload(Request $request)
     {
-        if ($request->hasFile('upload')) {
-            $file = $request->file('upload');
+        if($request->hasFile('upload')) {
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $filename = 'aboutus_'.time().'.'.$extension;
 
-            $filename = 'post_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
-
-            // store in storage/app/public/files/gambar_aboutus
-            $path = $file->storeAs('files/gambar_aboutus', $filename, 'public');
-
-            $url = asset('storage/' . $path);
-
-            return response()->json([
-                'filename' => $filename,
-                'uploaded' => 1,
-                'url' => $url
-            ]);
+            $request->file('upload')->move(upload_path('files/gambar_aboutus'), $filename);
+ 
+            $url = asset('files/gambar_aboutus/'.$filename);
+            return response()->json(['filename' => $filename, 'uploaded' => 1, 'url' => $url]);
         }
-
-        return response()->json([
-            'uploaded' => 0,
-            'error' => ['message' => 'No file uploaded']
-        ], 400);
     }
 
     public function store(Request $request)
     {
         // get gambar
-        if ($request->hasFile('gambar_aboutus')) {
+         if($request->hasFile('gambar_aboutus')) {
             $file = $request->file('gambar_aboutus');
-            $file_name = 'post_banner_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
-
-            // save to storage/app/public/files/gambar_aboutus/banner
-            $file->storeAs('files/gambar_aboutus/banner', $file_name, 'public');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = 'aboutus_banner_'.time().'.'.$extension;
+            $file->move(upload_path('files/gambar_aboutus'), $file_name);
         } else {
             $file_name = null;
         }
@@ -97,21 +84,29 @@ class AboutusController extends Controller
     public function update(Request $request)
     {
         $id = $request->id;
-        // get data by id
-        $data = Aboutus::getById($id);
-        // get gambar
+        $data = Aboutus::find($id); // FIXED
+
+        $file_name = $data->gambar;
+
+        $uploadPath = upload_path('files/gambar_aboutus/'); // ❌ no banner
+
         if ($request->hasFile('gambar_aboutus')) {
-            // delete old file if exists
-            if ($data->gambar && Storage::disk('public')->exists('files/gambar_aboutus/banner/' . $data->gambar)) {
-                Storage::disk('public')->delete('files/gambar_aboutus/banner/' . $data->gambar);
+
+            // delete old image safely
+            if (!empty($data->gambar)) {
+                $oldFile = $uploadPath . $data->gambar;
+
+                if (file_exists($oldFile) && is_file($oldFile)) {
+                    @unlink($oldFile);
+                }
             }
 
+            // upload new image
             $file = $request->file('gambar_aboutus');
-            $file_name = 'post_banner_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $extension = $file->getClientOriginalExtension();
+            $file_name = 'aboutus_' . time() . '.' . $extension;
 
-            $file->storeAs('files/gambar_aboutus/banner', $file_name, 'public');
-        } else {
-            $file_name = $data->gambar;
+            $file->move($uploadPath, $file_name);
         }
 
         $data->judul = $request->judul;
@@ -127,12 +122,22 @@ class AboutusController extends Controller
     // delete
     public function delete(Request $request)
     {
-        $id = $request->id;
-        $data = Aboutus::find($id);
-        if ($data->gambar && Storage::disk('public')->exists('files/gambar_aboutus/banner/' . $data->gambar)) {
-            Storage::disk('public')->delete('files/gambar_aboutus/banner/' . $data->gambar);
+        $data = Aboutus::find($request->id);
+
+        if ($data) {
+
+            $uploadPath = upload_path('files/gambar_aboutus/'); // ❌ no banner
+
+            if (!empty($data->gambar)) {
+                $file = $uploadPath . $data->gambar;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
+            $data->delete();
         }
-        $data->delete();
 
         return response()->json([
             'success' => true,

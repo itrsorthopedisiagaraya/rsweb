@@ -109,9 +109,9 @@ class DokterController extends Controller
         if ($request->hasFile('foto')) {
             $old_pict = $data->foto;
             // check file exists
-            if ($old_pict != null && file_exists(upload_path('files/foto-dokter/' . $old_pict))) {
-                // delete file
-                unlink(upload_path('files/foto-dokter/' . $old_pict));
+            $oldFilePath = upload_path('files/foto-dokter/' . $old_pict);
+            if (!empty($old_pict) && file_exists($oldFilePath) && is_file($oldFilePath)) {
+                unlink($oldFilePath);
             }
             // get file upload
             $file = $request->file('foto');

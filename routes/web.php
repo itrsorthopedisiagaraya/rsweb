@@ -73,7 +73,6 @@ Route::get('/get-dokter-api', [ComproApiController::class, 'getDokter'])->name('
 Route::get('/get-dokter-jadwal-api', [ComproApiController::class, 'getJadwal'])->name('get.dokter.jadwal.api');
 Route::get('/get-filter-dokter-jadwal-api/{hari}', [ComproApiController::class, 'getJadwalFilter'])->name('get.filter.jadwal.api');
 Route::get('/get-postingan-api', [ComproApiController::class, 'getPostingan'])->name('get.postingan.api');
-Route::get('/get-aboutus-api', [ComproApiController::class, 'getAboutus'])->name('get.aboutus.api');
 
 Route::prefix('dokter')->group(function() {
     Route::get('/jadwal/hari-ini/{hari}', [DokterController::class,'infoJadwalHariIni']);
@@ -141,7 +140,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/getBerita', [PostinganController::class, 'getDataBerita'])->name('getBerita');
         });
-
+        
         Route::prefix('aboutus')->group(function() {
             Route::get('/', [AboutusController::class, 'index'])->name('aboutus');
             Route::get('/create', [AboutusController::class, 'create'])->name('aboutus.create');

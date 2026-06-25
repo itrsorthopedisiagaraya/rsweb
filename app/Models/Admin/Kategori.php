@@ -27,4 +27,10 @@ class Kategori extends Model
     {
         return $this->hasMany(Karir::class, 'kategori_id', 'id');
     }
+    
+    // join to postingan
+    public function postingan()
+    {
+        return $this->hasMany(Postingan::class, 'kategori_id', 'id');
+    }
 }

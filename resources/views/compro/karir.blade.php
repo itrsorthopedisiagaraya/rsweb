@@ -1,119 +1,146 @@
 @extends('compro.layouts.app')
 @section('content')
+    <style>
+        .limited-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* Maksimal dua baris */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: #999;
+        }
+    </style>
 
-<style>
-    .limited-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* Maksimal dua baris */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        color: #999;
-    }
-</style>
+    <div class="page-banner overlay-dark bg-image"
+        style="background-image: url({{ asset('') }}assets-compro/assets/img/banner/banner-1.jpg);">
+        <div class="banner-section">
+            <div class="container text-center wow fadeInUp">
+                <nav aria-label="Breadcrumb">
+                    <ol class="breadcrumb breadcrumb-dark bg-transparent justify-content-center py-0 mb-2">
+                        <li class="breadcrumb-item"><a class=" text-success" href="{{ route('home') }}">Beranda</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Karir</li>
+                    </ol>
+                </nav>
+                <h1 class="font-weight-normal">Karir</h1>
+            </div> <!-- .container -->
+        </div> <!-- .banner-section -->
+    </div> <!-- .page-banner -->
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-sm-6 col-md-3">
-            <div class="card my-3 shadow">
-                <div class="card-header">
-                    <span>Filter Kriteria</span>
-                </div>
-                <div class="card-body">
-                    <form id="form-karir-filter">
-                        @csrf
-                        <div class="form-group">
-                            <label for="kategori">Kategori</label>
-                            <select name="kategori" id="kategori_list" class="form-control">
-                                <option value=""></option>
-                                @foreach ($kategori as $item)
-                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option>
-                                @endforeach
-                            </select>
+    <div class="page-section">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card my-3 shadow">
+                        <div class="card-header">
+                            <span>Filter Kriteria</span>
                         </div>
-                        <div class="form-group d-flex flex-column">
-                            <span class="mb-2">Jenjang Pendidikan</span>
-                            <label for="smk"><input name="pendidikan_f[]" value="SMK" class="mr-2" id="smk" type="checkbox">SMK/SMA</label>
-                            <label for="d1"><input name="pendidikan_f[]" value="D1" class="mr-2" id="d1" type="checkbox">D1</label>
-                            <label for="d3"><input name="pendidikan_f[]" value="D3" class="mr-2" id="d3" type="checkbox">D3</label>
-                            <label for="s1"><input name="pendidikan_f[]" value="S1" class="mr-2" id="s1" type="checkbox">S1</label>
-                            <label for="s2"><input name="pendidikan_f[]" value="S2" class="mr-2" id="s2" type="checkbox">S2</label>
+                        <div class="card-body">
+                            <form id="form-karir-filter">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="kategori">Kategori</label>
+                                    <select name="kategori" id="kategori_list" class="form-control">
+                                        <option value=""></option>
+                                        @foreach ($kategori as $item)
+                                            <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group d-flex flex-column">
+                                    <span class="mb-2">Jenjang Pendidikan</span>
+                                    <label for="smk"><input name="pendidikan_f[]" value="SMK" class="mr-2"
+                                            id="smk" type="checkbox">SMK/SMA</label>
+                                    <label for="d1"><input name="pendidikan_f[]" value="D1" class="mr-2"
+                                            id="d1" type="checkbox">D1</label>
+                                    <label for="d3"><input name="pendidikan_f[]" value="D3" class="mr-2"
+                                            id="d3" type="checkbox">D3</label>
+                                    <label for="s1"><input name="pendidikan_f[]" value="S1" class="mr-2"
+                                            id="s1" type="checkbox">S1</label>
+                                    <label for="s2"><input name="pendidikan_f[]" value="S2" class="mr-2"
+                                            id="s2" type="checkbox">S2</label>
+                                </div>
+                                <button class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Search</button>
+                            </form>
                         </div>
-                        <button class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Search</button>
-                    </form>
+                    </div>
                 </div>
+                <div class="col-8" id="karir-list-wrapper"></div>
+                <div id="modal-wrapper"></div>
             </div>
         </div>
-        <div class="col-8" id="karir-list-wrapper"></div>
-        <div id="modal-wrapper"></div>
     </div>
-</div>
-
 @endsection
 @section('script')
-<script>
-    $(document).ready(function() {
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
-        $('#kategori_list').select2({
-            placeholder: "Pilih Kategori"
-        });
-
-        $('#form-karir-filter').on('submit', function(e) {
-            e.preventDefault();
-            let data = $(this).serializeArray();
-            let kategori = $('#kategori_list').val();
-            if (kategori == '') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Pilih kategori terlebih dahulu!',
-                });
-                return false;
-            }
-
-            let pendidikan = [];
-            $('input[name="pendidikan_f[]"]:checked').each(function() {
-                pendidikan.push($(this).val());
+    <script>
+        $(document).ready(function() {
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $('#kategori_list').select2({
+                placeholder: "Pilih Kategori"
             });
 
-            let dataObj = {
-                kategori: kategori,
-                pendidikan: pendidikan,
-                _token: $('input[name="_token"]').val()
-            };
-            getKarir(dataObj);
-        });
+            $('#form-karir-filter').on('submit', function(e) {
+                e.preventDefault();
+                let data = $(this).serializeArray();
+                let kategori = $('#kategori_list').val();
+                if (kategori == '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Pilih kategori terlebih dahulu!',
+                    });
+                    return false;
+                }
 
-        function getKarir(data = {kategori: null, pendidikan: null, _token: csrfToken}) {
-            $('#karir-list-wrapper').empty();
-            $.ajax({
-                url: "{{ route('karir.admin.getAllData') }}",
-                type: "POST",
-                data: data,
-                success: function (res) {
-                    console.log(res);
-                    if(res.length == 0) {
-                        $('#karir-list-wrapper').append(`
+                let pendidikan = [];
+                $('input[name="pendidikan_f[]"]:checked').each(function() {
+                    pendidikan.push($(this).val());
+                });
+
+                let dataObj = {
+                    kategori: kategori,
+                    pendidikan: pendidikan,
+                    _token: $('input[name="_token"]').val()
+                };
+                getKarir(dataObj);
+            });
+
+            function getKarir(data = {
+                kategori: null,
+                pendidikan: null,
+                _token: csrfToken
+            }) {
+                $('#karir-list-wrapper').empty();
+                $.ajax({
+                    url: "{{ route('karir.admin.getAllData') }}",
+                    type: "POST",
+                    data: data,
+                    success: function(res) {
+                        console.log(res);
+                        if (res.length == 0) {
+                            $('#karir-list-wrapper').append(`
                             <div class="card my-3 shadow">
                                 <div class="card-body">
                                     Saat ini belum ada lowongan pekerjaan
                                 </div>
                             </div>
                         `);
-                    } else {
-                        $.each(res, function (indexInArray, valueOfElement) { 
-                            let keterangan = '';
-                            if(valueOfElement.pengalaman != null) {
-                                keterangan += `Minimal pengalaman ${valueOfElement.pengalaman} tahun`;
-                                keterangan += `<br>`;
-                                keterangan += `Berpengalaman sebagai ${valueOfElement.bidang_pengalaman}`;
-                                keterangan += `<br>`;
-                            }
-                            keterangan += `Kriteria: ${valueOfElement.kriteria}`;
-    
-                            let deadline = `Deadline: ${valueOfElement.deadline}`;
-    
-                            let el = 
-                            `<div class="card my-3">
+                        } else {
+                            $.each(res, function(indexInArray, valueOfElement) {
+                                let keterangan = '';
+                                if (valueOfElement.pengalaman != null) {
+                                    keterangan +=
+                                        `Minimal pengalaman ${valueOfElement.pengalaman} tahun`;
+                                    keterangan += `<br>`;
+                                    keterangan +=
+                                        `Berpengalaman sebagai ${valueOfElement.bidang_pengalaman}`;
+                                    keterangan += `<br>`;
+                                }
+                                keterangan += `Kriteria: ${valueOfElement.kriteria}`;
+
+                                let deadline = `Deadline: ${valueOfElement.deadline}`;
+
+                                let el =
+                                    `<div class="card my-3">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-9 col-sm-6">
@@ -149,9 +176,9 @@
                                     </div>
                                 </div>
                             </div>`;
-                            
-                            let modal = 
-                            `<div class="modal fade" id="modal-karir-${valueOfElement.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                let modal =
+                                    `<div class="modal fade" id="modal-karir-${valueOfElement.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -194,14 +221,14 @@
                                 </div>
                             </div>`;
 
-                            $('#karir-list-wrapper').append(el);
-                            $('#modal-wrapper').append(modal);
-                        });
+                                $('#karir-list-wrapper').append(el);
+                                $('#modal-wrapper').append(modal);
+                            });
+                        }
                     }
-                }
-            });
-        };
-        getKarir();
-    });
-</script>
+                });
+            };
+            getKarir();
+        });
+    </script>
 @endsection

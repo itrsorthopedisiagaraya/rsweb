@@ -21,7 +21,7 @@
                 <article class="aboutus-details">
                     @if (!empty($data->gambar))
                         <div class="post-thumb">
-                            <img src="{{ asset('storage/files/gambar_aboutus/banner/' . $data->gambar) }}" alt="">
+				<img src="{{ asset('') }}files/gambar_aboutus/{{ $data->gambar }}" alt="">
                         </div>
                     @endif
                     <div class="post-content">

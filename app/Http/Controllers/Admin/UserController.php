@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index()
     {
         // $users = User::getAll();
-        $users = User::where('role', '!=', '0')->get();
+	$users = User::where('role', '!=', '0')->get();
         return view('admin.user.index', [
             'users' => $users
         ]);
@@ -57,7 +57,7 @@ class UserController extends Controller
         $users->role = $request->role;
         $users->password = bcrypt($request->password1);
         $users->save();
-
+        // dd($request->all());
         return redirect()->route('user')
             ->with('success', 'User berhasil diupdate');
     }

@@ -23,7 +23,7 @@ class HomeController extends Controller
         $promo = Promo::all();
         $berita = Postingan::with("kategori")->get();
         $layanan = LayananUnggulan::all();
-        // dd($aboutus);
+        // dd($spesialis);
         $dokter = Dokter::getAllWithJadwal();
         return view ('compro.index', [
             'dokter' => $dokter,
@@ -49,11 +49,9 @@ class HomeController extends Controller
     // }
 
     public function blog (){
-        $kategori = DB::table('m_kategori')
-                        ->select('kategori', DB::raw('COUNT(kategori) as jml'))
-                        ->where('terkait', 'berita')
-                        ->groupBy('kategori')
-                        ->get();
+        $kategori = Kategori::withCount('postingan')
+                ->where('terkait', 'berita')
+                ->get();
         $data = Postingan::with('kategori')->get();
         $recent = Postingan::with('kategori')->limit(3)->get();
         return view ('compro.blog', [
@@ -64,10 +62,8 @@ class HomeController extends Controller
     }
 
     public function blogDetails ($slug){
-        $kategori = DB::table('m_kategori')
-                        ->select('kategori', DB::raw('COUNT(kategori) as jml'))
+        $kategori = Kategori::withCount('postingan')
                         ->where('terkait', 'berita')
-                        ->groupBy('kategori')
                         ->get();
 
         $data = Postingan::with('kategori')->where('slug', $slug)->get();
@@ -79,7 +75,7 @@ class HomeController extends Controller
             'recent' => $recent
         ]);
     }
-
+    
     public function aboutDetails ($slug){
         $data = Aboutus::where('slug', $slug)->first();
         return view ('compro.post.aboutus', [
