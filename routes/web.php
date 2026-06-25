@@ -20,7 +20,6 @@ use App\Http\Controllers\PartnerAsuransiController;
 use App\Http\Controllers\PromoController;
 use App\Models\LayananUnggulan;
 use App\Http\Controllers\Admin\AboutusController;
-use App\Http\Controllers\Compro\AboutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,8 +61,6 @@ Route::post('/karir/get-all-data', [AdminKarirController::class, 'getAllData'])-
 Route::get('/post/{id}', [PostController::class, 'index'])->name('post');
 
 Route::get('/promo/{slug}', [PromoController::class, 'promotion'])->name('promotion');
-
-Route::get('/abt/{id}', [AboutController::class, 'index'])->name('abt');
 
 Route::get('/layanan-unggulan/{id}', [HomeController::class, 'layananDetail'])->name('layananDetail');
 
