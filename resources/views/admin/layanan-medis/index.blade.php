@@ -2,24 +2,26 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-{{ Breadcrumbs::render('dashboard_layanan_medis') }}
+    {{ Breadcrumbs::render('dashboard_layanan_medis') }}
 @endsection
 
 @section('content')
     <h3>Data Layanan Medis</h3>
     <hr>
     <a href="{{ route('listLayananMedis.create') }}" class="btn btn-primary my-2">+ Tambah Layanan Medis</a>
-    <table class="table table-bordered __datatables" style="width:100%">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Gambar</th>
-                <th>Judul</th>
-                <th>Url</th> 
-                <th>Aksi</th>
-            </tr>
-        </thead>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered __datatables display no-wrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Gambar</th>
+                    <th>Judul</th>
+                    <th>Url</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 @endsection
 
 @section('script')
@@ -30,9 +32,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: `{{ route('listLayananMedis.getData') }}`,
-                columns: [
-                    {
-                        render: function (data, type, row, meta) {
+                columns: [{
+                        render: function(data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         },
                     },
@@ -41,7 +42,9 @@
                             return `<img width="100" src="{{ asset('') }}files/gambar_layanan_medis/${row.image}" alt="gambar">`;
                         }
                     },
-                    { data: 'judul' },
+                    {
+                        data: 'judul'
+                    },
                     {
                         render: function(data, type, row, meta) {
                             var url = `{{ route('layananMedis', ':slug') }}`;
@@ -52,7 +55,7 @@
                         }
                     },
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function(data, type, row) {
                             var url = `{{ route('listLayananMedis.edit', ':id') }}`;
                             url = url.replace(':id', row.id);
                             return `<button type="button" class="btn btn-danger btn-sm list-delete" data-id="${row.id}">Delete</button>
@@ -61,12 +64,12 @@
                     }
                 ]
             });
-            
-            
+
+
             $(document).on('click', '.list-delete', function(e) {
                 e.preventDefault();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                
+
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -88,10 +91,13 @@
                             },
                             success: function(res) {
                                 dataTable.ajax.reload(null, false);
-                                Swal.fire('Berhasil!', 'Berita berhasil dihapus.', 'success');
+                                Swal.fire('Berhasil!', 'Berita berhasil dihapus.',
+                                    'success');
                             },
                             error: function(xhr, status, error) {
-                                Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data.', 'error');
+                                Swal.fire('Error!',
+                                    'Terjadi kesalahan saat menghapus data.',
+                                    'error');
                             }
                         });
                     }

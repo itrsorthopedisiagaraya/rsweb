@@ -9,18 +9,20 @@
     <h3>Data Postingan Berita</h3>
     <hr>
     <a href="{{ route('postingan.create') }}" class="btn btn-primary my-2">+ Tambah Postingan Berita</a>
-    <table class="table table-bordered __datatables" style="width:100%">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Gambar</th>
-                <th>Judul</th>
-                <th>Url</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered __datatables" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Gambar</th>
+                    <th>Judul</th>
+                    <th>Url</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 @endsection
 
 @section('script')

@@ -2,36 +2,42 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-{{ Breadcrumbs::render('dashboard_layanan') }}
+    {{ Breadcrumbs::render('dashboard_layanan') }}
 @endsection
 
 @section('content')
     <style>
         #limited-content p {
-    max-width: 200px; /* Atur lebar maksimum untuk sel */
-    overflow: hidden; /* Sembunyikan konten yang melebihi lebar maksimum */
-    white-space: nowrap; /* Pastikan konten tidak terpotong ke baris baru */
-    text-overflow: ellipsis; /* Tampilkan tanda elipsis (...) jika konten terpotong */
-}
+            max-width: 200px;
+            /* Atur lebar maksimum untuk sel */
+            overflow: hidden;
+            /* Sembunyikan konten yang melebihi lebar maksimum */
+            white-space: nowrap;
+            /* Pastikan konten tidak terpotong ke baris baru */
+            text-overflow: ellipsis;
+            /* Tampilkan tanda elipsis (...) jika konten terpotong */
+        }
     </style>
     <h3>Layanan Unggulan</h3>
     <hr>
     <div class="d-flex justify-content-between">
         <a id="addKategori" href="{{ route('layananCreate') }}" class="btn btn-primary my-2">+ Tambah Layanan</a>
     </div>
-    <table class="table table-bordered __datatables" id="layanan-table" style="width:100%">
-        <thead>
-            <tr>
-                <th>Gambar</th>
-                <th>Nama Layanan</th>
-                <th>Isi layanan</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody> 
-            
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered __datatables" id="layanan-table" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Gambar</th>
+                    <th>Nama Layanan</th>
+                    <th>Isi layanan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @section('script')
@@ -52,13 +58,12 @@
                 searching: true,
                 ajax: {
                     data: function(d) {
-                        d._token = "{{ csrf_token() }}" 
+                        d._token = "{{ csrf_token() }}"
                     },
                     url: '{{ route('getLayanan') }}',
                     type: 'POST'
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'gambar',
                         name: 'gambar',
                         width: '25%',
@@ -78,12 +83,12 @@
                         name: 'action',
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         "type": "html",
                         "targets": 0,
                         "render": function(data, type, row) {
-                            return '<img width="100" src="{{ asset('') }}files/gambar_layanan/'+ row.gambar +'" alt="gambar">';
+                            return '<img width="100" src="{{ asset('') }}files/gambar_layanan/' +
+                                row.gambar + '" alt="gambar">';
                         }
                     },
                     {
