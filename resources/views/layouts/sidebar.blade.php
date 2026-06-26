@@ -11,7 +11,7 @@
             </div>
         </div>
         <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar pb-5" data-simplebar="">
+        <nav class="sidebar-nav scroll-sidebar pb-5 pt-3" data-simplebar="">
             <ul id="sidebarnav">
 
                 @foreach ($menus as $menu)
