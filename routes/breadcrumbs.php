@@ -160,3 +160,9 @@ Breadcrumbs::for('dashboard_pesan', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Pesan', route('pesan.index'));
 });
+
+// home > menu
+Breadcrumbs::for('dashboard_menu', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Menu', route('menu.index'));
+});
