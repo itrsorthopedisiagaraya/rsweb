@@ -154,3 +154,9 @@ Breadcrumbs::for('dashboard_partner_asuransi_edit', function (BreadcrumbTrail $t
     $trail->parent('dashboard_partner_asuransi');
     $trail->push('Edit', route('partner-asuransi.edit', ['id' => 1]));
 });
+
+// home > pesan
+Breadcrumbs::for('dashboard_pesan', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Pesan', route('pesan.index'));
+});

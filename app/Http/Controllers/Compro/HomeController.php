@@ -10,6 +10,7 @@ use App\Models\LayananMedis;
 use App\Models\LayananUnggulan;
 use App\Models\Promo;
 use App\Models\Admin\Aboutus;
+use App\Models\Pesan;
 use App\Models\TempDaftarBerobat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,23 @@ class HomeController extends Controller
 
     public function contact (){
         return view ('compro.contact');
+    }
+
+    public function contactSubmit(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subjek' => 'required|string|max:255',
+            'pesan' => 'required|string',
+        ]);
+
+        // Save the contact message to the database
+        Pesan::create($request->all());
+
+        // Return a JSON response indicating success
+        return response()->json(['success' => true]);
     }
 
     public function daftarBerobat(Request $request)

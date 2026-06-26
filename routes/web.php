@@ -20,6 +20,7 @@ use App\Http\Controllers\PartnerAsuransiController;
 use App\Http\Controllers\PromoController;
 use App\Models\LayananUnggulan;
 use App\Http\Controllers\Admin\AboutusController;
+use App\Http\Controllers\Admin\PesanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,7 @@ Route::prefix('about')->group(function () {
 });
 
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+Route::post('/contact/submit', [HomeController::class, 'contactSubmit'])->name('contact.submit');
 Route::get('/karir-info',[KarirController::class,'index'])->name('karir');
 Route::post('/karir/get-all-data', [AdminKarirController::class, 'getAllData'])->name('karir.admin.getAllData');
 Route::get('/post/{id}', [PostController::class, 'index'])->name('post');
@@ -199,6 +201,11 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store',[PartnerAsuransiController::class,'store'])->name('partner-asuransi.store');
             Route::post('/update/{id}',[PartnerAsuransiController::class,'update'])->name('partner-asuransi.update');
             Route::delete('/delete/{id}',[PartnerAsuransiController::class,'delete'])->name('partner-asuransi.delete');
+        });
+
+        Route::prefix('pesan')->group(function() {
+            Route::get('/', [PesanController::class, 'index'])->name('pesan.index');
+            Route::delete('/delete/{id}', [PesanController::class, 'delete'])->name('pesan.delete');
         });
     });
 
