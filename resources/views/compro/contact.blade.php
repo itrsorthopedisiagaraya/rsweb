@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-12 py-2 wow fadeInUp">
                         <label for="pesan">Pesan</label>
-                        <textarea id="pesan" class="form-control" rows="8" placeholder="Masukan Pesan.."></textarea>
+                        <textarea id="pesan" class="form-control" rows="10" placeholder="Masukan Pesan.."></textarea>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary wow zoomIn">Kirim Pesan</button>

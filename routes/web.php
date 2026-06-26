@@ -21,6 +21,7 @@ use App\Http\Controllers\PromoController;
 use App\Models\LayananUnggulan;
 use App\Http\Controllers\Admin\AboutusController;
 use App\Http\Controllers\Admin\PesanController;
+use App\Http\Controllers\Admin\UserAccessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -207,6 +208,15 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [PesanController::class, 'index'])->name('pesan.index');
             Route::delete('/delete/{id}', [PesanController::class, 'delete'])->name('pesan.delete');
         });
+
+        Route::prefix('menu')->group(function() {
+            Route::get('/', [\App\Http\Controllers\Admin\MenuController::class, 'index'])->name('menu.index');
+            Route::get('/create', [\App\Http\Controllers\Admin\MenuController::class, 'create'])->name('menu.create');
+            Route::post('/store', [\App\Http\Controllers\Admin\MenuController::class, 'store'])->name('menu.store');
+            Route::get('/edit/{id}', [\App\Http\Controllers\Admin\MenuController::class, 'edit'])->name('menu.edit');
+            Route::put('/update/{id}', [\App\Http\Controllers\Admin\MenuController::class, 'update'])->name('menu.update');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\MenuController::class, 'destroy'])->name('menu.delete');
+        });
     });
 
     Route::prefix('api')->group(function() {
@@ -222,3 +232,12 @@ Route::middleware(['auth'])->group(function () {
 //     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 // });
 
+Route::get(
+    '/user-access/{user}',
+    [UserAccessController::class, 'edit']
+)->name('user.access.edit');
+
+Route::put(
+    '/user-access/{user}',
+    [UserAccessController::class, 'update']
+)->name('user.access.update');

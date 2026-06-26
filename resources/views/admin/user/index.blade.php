@@ -28,7 +28,16 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->nip }}</td>
                         <td>{{ $user->jabatan }}</td>
-                        <td>{{ ($user->role == 1 ? 'Admin' : $user->role == 2) ? 'Super Admin' : 'Pengguna' }}</td>
+                        <td>
+                            @if ($user->role == 1)
+                                Super Admin
+                            @elseif ($user->role == 2)
+                                Admin
+                            @elseif ($user->role == 3)
+                                Dokter
+                            @else
+                                Pengguna
+                            @endif
                         <td>
                             <form action="{{ route('user.delete', ['id' => $user->id]) }}" method="POST" class="d-inline">
                                 @csrf

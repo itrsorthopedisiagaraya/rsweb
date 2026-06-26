@@ -52,13 +52,28 @@ class User extends Authenticatable
         return self::all();
     }
 
-    public function isAdmin()
+    public function isSuperAdmin()
     {
         return $this->role == '1';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == '2';
     }
 
     public function userDetail()
     {
         return $this->hasOne(UserDetail::class, 'user_id', 'id');
+    }
+
+    public function menus()
+    {
+        return $this->belongsToMany(
+            \App\Models\Admin\Menu::class,
+            'user_menu',
+            'user_id',
+            'menu_id'
+        );
     }
 }

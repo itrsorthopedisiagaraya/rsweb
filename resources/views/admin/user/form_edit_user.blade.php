@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-{{ Breadcrumbs::render('dashboard_user_create') }}
+    {{ Breadcrumbs::render('dashboard_user_create') }}
 @endsection
 
 @section('content')
@@ -57,7 +57,7 @@
             <div class="col-6">
                 <div class="mb-3">
                     <label for="password1" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password1" id="password1"  placeholder="*****">
+                    <input type="password" class="form-control" name="password1" id="password1" placeholder="*****">
                 </div>
             </div>
             <div class="col-6">
@@ -65,6 +65,26 @@
                     <label for="password2" class="form-label">Konfirmasi Password</label>
                     <input type="password" class="form-control" name="password2" id="password2" placeholder="*****">
                 </div>
+            </div>
+
+            <hr>
+
+            <h5>Menu Access</h5>
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <ul>
+
+                        @foreach ($menus as $menu)
+                            <x-menu-checkbox :menu="$menu" :selectedMenus="$selectedMenus" />
+                        @endforeach
+
+                    </ul>
+
+                </div>
+
             </div>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
