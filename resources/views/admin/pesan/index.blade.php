@@ -17,6 +17,7 @@
                     <th>Email</th>
                     <th>Subjek</th>
                     <th>Pesan</th>
+                    <th>Tanggal dibuat</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -28,6 +29,9 @@
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->subjek }}</td>
                         <td>{{ $item->pesan }}</td>
+                        <td>
+                            {{ $item->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('l, d/m/Y | H:i:s') }}
+                        </td>
                         <td>
                             <form action="{{ route('pesan.delete', ['id' => $item->id]) }}" method="POST" class="d-inline">
                                 @csrf
