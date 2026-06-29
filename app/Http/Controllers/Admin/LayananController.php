@@ -43,6 +43,64 @@ class LayananController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $layanan = LayananUnggulan::find($id);
+        return view('admin.layanan.form-edit-layanan', [
+            'layanan' => $layanan
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $layanan = LayananUnggulan::find($id);
+
+        if($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = 'layanan_'.time().'.'.$extension;
+            $file->move(upload_path('files/gambar_layanan/'), $file_name);
+        } else {
+            $file_name = $layanan->gambar;
+        }
+
+        LayananUnggulan::where('id', $id)
+            ->update([
+                'layanan' => $request->layanan,
+                'gambar' => $file_name,
+                'konten' => $request->konten
+            ]);
+
+        return redirect('layanan')->with([
+            'success' => true,
+            'message' => 'Data layanan berhasil diubah!'
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        $layanan = LayananUnggulan::find($request->id);
+
+        if ($layanan) {
+            $uploadPath = upload_path('files/gambar_layanan/');
+
+            if (!empty($layanan->gambar)) {
+                $file = $uploadPath . $layanan->gambar;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
+            $layanan->delete();
+        }
+
+        return redirect('layanan')->with([
+            'success' => true,
+            'message' => 'Data layanan berhasil dihapus!'
+        ]);
+    }
+
     public function getLayanan()
     {
         $layanan = LayananUnggulan::all();
@@ -81,7 +139,7 @@ class LayananController extends Controller
         $slug = str_replace(' ', '-', strtolower($request->judul));
         
         $data = new LayananMedis();
-        $data->slug = $slug;
+        // $data->slug = $slug;
         $data->judul = $request->judul;
         $data->image = $file_name;
         $data->konten = $request->konten;
@@ -101,8 +159,23 @@ class LayananController extends Controller
 
     public function deleteLayananMedis(Request $request)
     {
-        $id = $request->id;
-        LayananMedis::find($id)->delete();
+        $data = LayananMedis::find($request->id);
+
+        if ($data) {
+
+            $uploadPath = upload_path('files/gambar_layanan_medis/');
+
+            if (!empty($data->image)) {
+                $file = $uploadPath . $data->image;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
+            $data->delete();
+        }
+
         return redirect()->route('listLayananMedis')->with([
             'success' => true,
             'message' => 'Data layanan medis berhasil dihapus!'
@@ -134,7 +207,7 @@ class LayananController extends Controller
 
         LayananMedis::where('id', $id)
             ->update([
-                'slug' => $slug,
+                // 'slug' => $slug,
                 'judul' => $request->judul,
                 'image' => $file_name,
                 'konten' => $request->konten
@@ -148,7 +221,7 @@ class LayananController extends Controller
 
     public function layananMedis($slug)
     {
-        $data = LayananMedis::where('slug', $slug)->first();
+        $data = LayananMedis::where('id', $slug)->first();
         $all_layanan = LayananMedis::all();
         return view('compro.layanan-medis', [
             'data' => $data,

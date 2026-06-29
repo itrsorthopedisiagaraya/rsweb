@@ -177,6 +177,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [LayananController::class, 'index'])->name('layanan');
             Route::get('/create', [LayananController::class, 'create'])->name('layananCreate');
             Route::post('/store', [LayananController::class, 'store'])->name('layananStore');
+            Route::get('/edit/{id}', [LayananController::class, 'edit'])->name('layananEdit');
+            Route::post('/update/{id}', [LayananController::class, 'update'])->name('layananUpdate');
+            Route::post('/delete', [LayananController::class, 'delete'])->name('layananDelete');
             Route::post('/getLayanan', [LayananController::class, 'getLayanan'])->name('getLayanan');
         });
 

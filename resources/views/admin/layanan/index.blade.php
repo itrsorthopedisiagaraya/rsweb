@@ -117,13 +117,62 @@
                         "targets": 3,
                         // "data": id,
                         "render": function(data, type, row) {
+
                             return `
                                 <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">Delete</button>
-                                <button class="btn btn-sm btn-warning edit-kategori" id="" data-bs-toggle="modal" data-bs-target="#editKategori" data-id="${row.id}">Edit</button>
+                                <a href="{{ route('layananEdit', ':id') }}" data-id="${row.id}" class="btn btn-sm btn-warning edit-kategori">Edit</a>
                             `;
                         }
                     }
                 ]
+            });
+
+            // edit data
+            $(document).on('click', '.edit-kategori', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var url = $(this).attr('href').replace(':id', id);
+                window.location.href = url;
+            });
+
+            // delete data
+            $(document).on('click', '.delete-btn', function(e) {
+                e.preventDefault();
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var dataId = $(this).data('id');
+                        $.ajax({
+                            url: `{{ route('layananDelete') }}`,
+                            type: 'POST',
+                            data: {
+                                _token: csrfToken,
+                                id: dataId
+                            },
+                            success: function(res) {
+                                $('#layanan-table').DataTable().ajax.reload(null,
+                                    false);
+                                Swal.fire('Berhasil!', 'Berita berhasil dihapus.',
+                                    'success');
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire('Error!',
+                                    'Terjadi kesalahan saat menghapus data.',
+                                    'error');
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

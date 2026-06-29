@@ -47,8 +47,8 @@
                     },
                     {
                         render: function(data, type, row, meta) {
-                            var url = `{{ route('layananMedis', ':slug') }}`;
-                            url = url.replace(':slug', row.slug);
+                            var url = `{{ route('layananMedis', ':id') }}`;
+                            url = url.replace(':id', row.id);
                             return `<a href="${url}">
                                         <u>${url}</u>
                                     </a>`;
