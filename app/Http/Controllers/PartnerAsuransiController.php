@@ -66,16 +66,19 @@ class PartnerAsuransiController extends Controller
         // check if file is uploaded
         if ($request->hasFile('logo')) {
 
-            // delete old file
-            if (file_exists(public_path('files/logo-partner/' . $partner->logo_partner))) {
-                unlink(public_path('files/logo-partner/' . $partner->logo_partner));
+            // delete old logo if exists
+            if (!empty($partner->logo_partner)) {
+                $oldFile = 'files/logo-partner/' . $partner->logo_partner;
+                if (file_exists($oldFile) && is_file($oldFile)) {
+                    @unlink($oldFile);
+                }
             }
 
             $file = $request->file('logo');
             $filename = 'partner-' . time() . '.' . $file->getClientOriginalExtension();
             $file->move('files/logo-partner', $filename);
             $partner->logo_partner = $filename;
-        }
+        } 
 
         $partner->save();
 
@@ -85,11 +88,18 @@ class PartnerAsuransiController extends Controller
     public function delete(Request $request)
     {
         $partner = PartnerAsuransi::find($request->id);
-        $partner->delete();
+        if ($partner) {
+            $uploadPath = upload_path('files/logo-partner/');
 
-        // delete file
-        if (file_exists(public_path('files/logo-partner/' . $partner->logo_partner))) {
-            unlink(public_path('files/logo-partner/' . $partner->logo_partner));
+            if (!empty($partner->logo_partner)) {
+                $file = $uploadPath . $partner->logo_partner;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
+            $partner->delete();
         }
 
         return redirect()->route('partnerAsuransi')->with('success', 'Partner berhasil dihapus');
