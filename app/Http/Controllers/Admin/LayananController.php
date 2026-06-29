@@ -56,6 +56,16 @@ class LayananController extends Controller
         $layanan = LayananUnggulan::find($id);
 
         if($request->hasFile('gambar')) {
+            // hapus file lama jika ada
+            if (!empty($layanan->gambar)) {
+                $uploadPath = upload_path('files/gambar_layanan/');
+                $file = $uploadPath . $layanan->gambar;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
             $file = $request->file('gambar');
             $extension = $file->getClientOriginalExtension();
             $file_name = 'layanan_'.time().'.'.$extension;
@@ -195,6 +205,16 @@ class LayananController extends Controller
         $data = LayananMedis::find($id);
 
         if($request->hasFile('gambar')) {
+            // hapus file lama jika ada
+            if (!empty($data->image)) {
+                $uploadPath = upload_path('files/gambar_layanan_medis/');
+                $file = $uploadPath . $data->image;
+
+                if (file_exists($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+
             $file = $request->file('gambar');
             $extension = $file->getClientOriginalExtension();
             $file_name = 'layanan_medis_'.time().'.'.$extension;
