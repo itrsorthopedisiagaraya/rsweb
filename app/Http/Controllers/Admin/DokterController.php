@@ -106,12 +106,13 @@ class DokterController extends Controller
         // get data by id
         $data = Dokter::getById($id);
         // update foto
-        if ($request->hasFile('foto')) {
-            $old_pict = $data->foto;
-            // check file exists
-            $oldFilePath = upload_path('files/foto-dokter/' . $old_pict);
-            if (!empty($old_pict) && file_exists($oldFilePath) && is_file($oldFilePath)) {
-                unlink($oldFilePath);
+        if($request->hasFile('foto')){
+            // delete old file if exists
+            if(!empty($data->foto)){
+                $oldFile = 'files/foto-dokter/' . $data->foto;
+                if(file_exists($oldFile) && is_file($oldFile)){
+                    @unlink($oldFile);
+                }
             }
             // get file upload
             $file = $request->file('foto');
@@ -154,6 +155,13 @@ class DokterController extends Controller
     public function destroy($id)
     {
         $data = Dokter::find($id);
+        // delete foto if exists
+        if (!empty($data->foto)) {
+            $oldFile = 'files/foto-dokter/' . $data->foto;
+            if (file_exists($oldFile) && is_file($oldFile)) {
+                @unlink($oldFile);
+            }
+        }
         $data->delete();
 
         return redirect()->route('dokter')
