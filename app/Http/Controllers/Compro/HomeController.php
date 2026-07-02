@@ -11,6 +11,7 @@ use App\Models\LayananUnggulan;
 use App\Models\Promo;
 use App\Models\Admin\Aboutus;
 use App\Models\Pesan;
+use App\Models\KritikSaran;
 use App\Models\TempDaftarBerobat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -91,19 +92,48 @@ class HomeController extends Controller
 
     public function contactSubmit(Request $request)
     {
-        // Validate the request data
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subjek' => 'required|string|max:255',
-            'pesan' => 'required|string',
+            'nama'           => 'required|string|max:255',
+            'email'          => 'required|email|max:255',
+            'no_telepon'     => ['required', 'regex:/^0[0-9]{9,14}$/'],
+            'rating'         => 'required|integer|between:1,5',
+            'kritik_saran'   => 'required|string',
+            'gambar'         => 'nullable|array',
+            'gambar.*'       => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Save the contact message to the database
-        Pesan::create($request->all());
+        // Upload image
+        $fileNames = [];
 
-        // Return a JSON response indicating success
-        return response()->json(['success' => true]);
+        if ($request->hasFile('gambar')) {
+
+            foreach ($request->file('gambar') as $index => $file) {
+
+                $extension = $file->getClientOriginalExtension();
+
+                $fileName = 'kritik_saran_' . time() . '_' . $index . '.' . $extension;
+
+                $file->move(upload_path('files/gambar_kritiksaran'), $fileName);
+
+                $fileNames[] = $fileName;
+            }
+        }
+
+        // dd($request->all(), $fileNames);
+        // Save to database
+        KritikSaran::create([
+            'nama'           => $request->nama,
+            'email'          => $request->email,
+            'no_telepon'     => $request->no_telepon,
+            'rating'         => $request->rating,
+            'kritik_saran'   => $request->kritik_saran,
+            'gambar'         => $fileNames,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kritik dan saran berhasil dikirim.'
+        ]);
     }
 
     public function daftarBerobat(Request $request)

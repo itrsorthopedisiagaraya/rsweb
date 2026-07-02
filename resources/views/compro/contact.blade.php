@@ -19,26 +19,63 @@
         <div class="container">
             <h1 class="text-center wow fadeInUp">Tinggalkan pesan</h1>
 
-            <form class="contact-form mt-5" action="" method="POST" id="contactForm">
-                <div class="row mb-3">
-                    <div class="col-sm-6 py-2 wow fadeInLeft">
-                        <label for="nama">Nama</label>
-                        <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap..">
+            <form class="contact-form mt-5" id="contactForm" enctype="multipart/form-data">
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nama <span class="text-danger">*</span></label>
+                        <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap">
                     </div>
-                    <div class="col-sm-6 py-2 wow fadeInRight">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Alamat Email..">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" id="email" class="form-control" placeholder="Masukkan email">
                     </div>
-                    <div class="col-12 py-2 wow fadeInUp">
-                        <label for="subjek">Subject</label>
-                        <input type="text" id="subjek" class="form-control" placeholder="Masukan subject..">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            No. Telepon <span class="text-danger">*</span>
+                        </label>
+                        <input type="tel" id="no_telepon" name="no_telepon" class="form-control"
+                            placeholder="08xxxxxxxxxx" inputmode="numeric" pattern="^0[0-9]{9,14}$" maxlength="15" required>
+                        <small class="text-muted">
+                            Contoh: 081234567890
+                        </small>
                     </div>
-                    <div class="col-12 py-2 wow fadeInUp">
-                        <label for="pesan">Pesan</label>
-                        <textarea id="pesan" class="form-control" rows="10" placeholder="Masukan Pesan.."></textarea>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Rating <span class="text-danger">*</span></label>
+                        <select id="rating" class="form-control">
+                            <option value="">Pilih Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Sangat Baik</option>
+                            <option value="4">⭐⭐⭐⭐ Baik</option>
+                            <option value="3">⭐⭐⭐ Cukup</option>
+                            <option value="2">⭐⭐ Kurang</option>
+                            <option value="1">⭐ Sangat Kurang</option>
+                        </select>
                     </div>
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Kritik & Saran <span class="text-danger">*</span></label>
+                        <textarea id="kritik_saran" rows="6" class="form-control" placeholder="Tuliskan kritik dan saran Anda..."></textarea>
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <label class="form-label">Upload Foto (Opsional)</label>
+                        <input type="file" id="gambar" name="gambar[]" class="form-control" accept="image/*" multiple>
+
+                        <small class="text-muted">
+                            Format: JPG, JPEG, PNG. Maksimal 2 MB per file.
+                        </small>
+                    </div>
+
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="fa fa-paper-plane"></i> Kirim Kritik & Saran
+                        </button>
+                    </div>
+
                 </div>
-                <button type="submit" class="btn btn-primary wow zoomIn">Kirim Pesan</button>
             </form>
         </div>
     </div>
@@ -53,55 +90,73 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(function() {
 
             $('#contactForm').submit(function(e) {
                 e.preventDefault();
 
-                // Get form values
-                var name = $('#nama').val();
-                var email = $('#email').val();
-                var subject = $('#subjek').val();
-                var message = $('#pesan').val();
+                let formData = new FormData();
 
-                // Perform validation (you can add more validation as needed)
-                if (name === '' || email === '' || subject === '' || message === '') {
+                formData.append('nama', $('#nama').val());
+                formData.append('email', $('#email').val());
+                formData.append('no_telepon', $('#no_telepon').val());
+                formData.append('rating', $('#rating').val());
+                formData.append('kritik_saran', $('#kritik_saran').val());
+
+                let files = $('#gambar')[0].files;
+
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('gambar[]', files[i]);
+                }
+
+                formData.append('_token', '{{ csrf_token() }}');
+
+                if (
+                    $('#nama').val() == '' ||
+                    $('#email').val() == '' ||
+                    $('#no_telepon').val() == '' ||
+                    $('#rating').val() == '' ||
+                    $('#kritik_saran').val() == ''
+                ) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Peringatan',
-                        text: 'Please fill in all fields.'
+                        text: 'Mohon lengkapi semua data yang wajib diisi.'
                     });
                     return;
                 }
 
-                // Send the form data to the server using AJAX
                 $.ajax({
-                    url: '{{ route('contact.submit') }}', // Replace with your route for handling form submission
-                    method: 'POST',
-                    data: {
-                        nama: name,
-                        email: email,
-                        subjek: subject,
-                        pesan: message,
-                        _token: '{{ csrf_token() }}' // Include CSRF token for security
-                    },
+                    url: '{{ route('contact.submit') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
                     success: function(response) {
+
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Terimakasih, Pesan anda telah berhasil dikirim.'
+                            title: 'Terima Kasih',
+                            text: 'Kritik dan saran Anda berhasil dikirim.'
                         });
+
                         $('#contactForm')[0].reset();
                     },
-                    error: function(xhr, status, error) {
+
+                    error: function(xhr) {
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Gagal',
-                            text: 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.'
+                            text: 'Terjadi kesalahan saat mengirim data.'
                         });
+
                     }
                 });
+
             });
+
         });
     </script>
 @endsection

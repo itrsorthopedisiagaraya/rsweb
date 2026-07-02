@@ -22,6 +22,7 @@ use App\Models\LayananUnggulan;
 use App\Http\Controllers\Admin\AboutusController;
 use App\Http\Controllers\Admin\PesanController;
 use App\Http\Controllers\Admin\UserAccessController;
+use App\Http\Controllers\Admin\KritikSaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +211,11 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('pesan')->group(function() {
             Route::get('/', [PesanController::class, 'index'])->name('pesan.index');
             Route::delete('/delete/{id}', [PesanController::class, 'delete'])->name('pesan.delete');
+        });
+
+        Route::prefix('kritik-saran')->group(function() {
+            Route::get('/', [KritikSaranController::class, 'index'])->name('kritik-saran.index');
+            Route::delete('/delete/{id}', [KritikSaranController::class, 'delete'])->name('kritik-saran.delete');
         });
 
         Route::prefix('menu')->group(function() {
