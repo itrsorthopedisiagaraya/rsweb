@@ -113,6 +113,7 @@ class AboutusController extends Controller
         $data->slug = $request->slug;
         $data->konten = $request->konten;
         $data->gambar = $file_name;
+        $data->disabled = $request->has('disabled') ? true : false;
         $data->updated_by = Auth::user()->id;
         $data->save();
 

@@ -17,6 +17,11 @@ class Aboutus extends Model
         'gambar',
         'created_by',
         'updated_by',
+        'disabled',
+    ];
+
+    protected $casts = [
+        'disabled' => 'boolean',
     ];
 
     // get all data
@@ -29,6 +34,12 @@ class Aboutus extends Model
     public static function getById($id)
     {
         return self::find($id);
+    }
+
+    // scope to filter enabled records
+    public function scopeEnabled($query)
+    {
+        return $query->where('disabled', false);
     }
 
 }

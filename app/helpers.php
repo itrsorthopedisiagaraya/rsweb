@@ -24,7 +24,7 @@ if(!function_exists('breadcrumbs')) {
     }
     
     function getAboutus() {
-        $aboutus = \App\Models\Admin\Aboutus::all();
+        $aboutus = \App\Models\Admin\Aboutus::enabled()->get();
         return $aboutus;
     }
 }

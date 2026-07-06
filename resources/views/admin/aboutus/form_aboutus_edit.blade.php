@@ -38,6 +38,12 @@
                     <label for="nip" class="form-label">Gambar Utama</label>
                     <input type="file" class="form-control" name="gambar_aboutus">
                 </div>
+                <div class="mb-3">
+                    <label>
+                        <input type="checkbox" name="disabled" value="1" {{ $data->disabled ? 'checked' : '' }}>
+                        &nbsp; Sembunyikan Konten
+                    </label>
+                </div>
             </div>
             <div class="col-12">
                 <div class="mb-3">

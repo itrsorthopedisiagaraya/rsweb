@@ -103,6 +103,7 @@
                   <li><a href="{{ route('blog') }}">Berita Terkini</a></li>
                   <li><a href="{{ route('karir') }}">Karir Otrhopedi</a></li>
                   <li><a href="{{ route('promo') }}">Promo</a></li>
+                  <li><a href="https://siakre.net/dashboard/public_informasi">Mutu Layanan</a></li>
                 </ul>
               </div>
             </li>

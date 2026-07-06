@@ -17,6 +17,7 @@
                     <th>Gambar</th>
                     <th>Judul</th>
                     <th>Url</th>
+                    <th>Sembunyikan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -41,8 +42,8 @@
                         render: function(data, type, row, meta) {
                             if (!data || String(data).trim() === '') {
                                 return `<span class="text-muted fst-italic">No image</span>`;
-                            }                            
-			                    return `<img width="100" src="{{ asset('') }}files/gambar_aboutus/${row.gambar}" alt="gambar">`;
+                            }
+                            return `<img width="100" src="{{ asset('') }}files/gambar_aboutus/${row.gambar}" alt="gambar">`;
                         }
                     },
                     {
@@ -55,6 +56,12 @@
                             return `<a href="${url}">
                                         <u>${url}</u>
                                     </a>`;
+                        }
+                    },
+                    {
+                        data: 'disabled',
+                        render: function(data, type, row) {
+                            return data ? 'Ya' : 'Tidak';
                         }
                     },
                     {
