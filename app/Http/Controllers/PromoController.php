@@ -11,7 +11,7 @@ class PromoController extends Controller
     public function promotion($slug)
     {
         $data = Promo::where("slug", $slug)->first();
-        $all_promotions = Promo::all();
+        $all_promotions = Promo::whereDate('deadline', '>=', now())->get();
         return view('compro.post.promotion', [
             'data'=> $data, 
             'all_promo' => $all_promotions
