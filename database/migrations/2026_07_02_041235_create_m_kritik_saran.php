@@ -21,7 +21,7 @@ return new class extends Migration
 
             // Review
             $table->unsignedTinyInteger('rating'); // 1-5
-            $table->text('kritik_saran');
+            $table->longText('kritik_saran');
 
             // Optional image
             $table->string('gambar')->nullable();

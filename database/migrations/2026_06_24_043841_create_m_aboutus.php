@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->string('slug');
-            $table->text('konten');
+            $table->longText('konten');
             $table->string('gambar')->nullable();
             $table->string('created_by');
             $table->string('updated_by');

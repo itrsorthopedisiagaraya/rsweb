@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('kategori_id');
             $table->string('judul');
             $table->string('slug');
-            $table->text('konten');
+            $table->longText('konten');
             $table->string('gambar');
             $table->string('status');
             $table->string('created_by');

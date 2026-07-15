@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('layanan');
             $table->string('gambar');
-            $table->text('konten');
+            $table->longText('konten');
             $table->timestamps();
         });
     }

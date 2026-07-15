@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('judul');
             $table->string('slug');
             $table->string('gambar');
-            $table->text('konten');
+            $table->longText('konten');
             $table->date('deadline');
             $table->timestamps();
         });
