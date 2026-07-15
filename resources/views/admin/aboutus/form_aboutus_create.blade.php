@@ -19,7 +19,7 @@
             <div class="col-sm-6">
                 <div class="mb-3">
                     <label for="judul" class="form-label">Judul</label>
-                    <input type="text" class="form-control" name="judul" id="judul" placeholder="...">
+                    <input type="text" class="form-control" name="judul" id="judul" placeholder="..." required>
                 </div>
                 <div class="mb-3">
                     <label for="nip" class="form-label">Slug</label>

@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-{{ Breadcrumbs::render('dashboard_promo_create') }}
+    {{ Breadcrumbs::render('dashboard_promo_create') }}
 @endsection
 
 @section('content')
@@ -38,7 +38,7 @@
             <div class="col-sm-12">
                 <div class="mb-3">
                     <label for="konten" class="form-label">Konten</label>
-                    <textarea type="text" class="form-control" id="konten" name="konten"></textarea>
+                    <textarea type="text" class="form-control" id="editor1" name="konten"></textarea>
                 </div>
             </div>
         </div>
@@ -50,27 +50,27 @@
 @endsection
 
 @section('script')
-<script>
-    $(document).ready(function() {
-        $("#promo").keyup(function() {
-            var judul = $("#promo").val();
-            var slug = judul.replace(/\s+/g, '-').toLowerCase();
-            $(".slug").val(slug);
-        });
-
-        $('#deadline').datepicker({
-            dateFormat: 'yy-mm-dd'
-        });
-
-        ClassicEditor
-            .create( document.querySelector( '#konten' ), {
-                ckfinder: {
-                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
-                }
-            } )
-            .catch( error => {
-                console.error( error );
+    <script>
+        $(document).ready(function() {
+            $("#promo").keyup(function() {
+                var judul = $("#promo").val();
+                var slug = judul.replace(/\s+/g, '-').toLowerCase();
+                $(".slug").val(slug);
             });
-    });
-</script>
+
+            $('#deadline').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+
+            ClassicEditor
+                .create(document.querySelector('#konten'), {
+                    ckfinder: {
+                        uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
 @endsection

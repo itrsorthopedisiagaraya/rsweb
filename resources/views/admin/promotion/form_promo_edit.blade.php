@@ -2,13 +2,13 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumb')
-<span class="d-flex justify-content-center align-items-center">
-    <a style="margin-right: 10px" href="{{ route('dashboard') }}">Dashboard</a> 
-    <i style="margin-right: 10px" class="fa fa-angle-right"></i>
-    <a style="margin-right: 10px" href="{{ route('postingan') }}">Promo</a>
-    <i style="margin-right: 10px" class="fa fa-angle-right"></i>
-    Edit
-</span>
+    <span class="d-flex justify-content-center align-items-center">
+        <a style="margin-right: 10px" href="{{ route('dashboard') }}">Dashboard</a>
+        <i style="margin-right: 10px" class="fa fa-angle-right"></i>
+        <a style="margin-right: 10px" href="{{ route('promo') }}">Promo</a>
+        <i style="margin-right: 10px" class="fa fa-angle-right"></i>
+        Edit
+    </span>
 @endsection
 
 @section('content')
@@ -30,21 +30,23 @@
                 </div>
                 <div class="mb-3">
                     <label for="slug" class="form-label">Slug</label>
-                    <input type="text" class="form-control slug" id="slug" value="{{ $data->slug }}" name="slug">
+                    <input type="text" class="form-control slug" id="slug" value="{{ $data->slug }}"
+                        name="slug">
                 </div>
                 <div class="mb-3">
                     <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" class="form-control" id="gambar" name="gambar" value="{{ $data->gambar }}">
                 </div>
                 <div class="mb-3">
-                    <label for="deadline" class="form-label">Tenggal Akhir Promo</label>
-                    <input type="text" class="form-control" id="deadline" value="{{ $data->deadline }}" name="deadline" autocomplete="off">
+                    <label for="deadline" class="form-label ">Tenggal Akhir Promo</label>
+                    <input type="text" class="form-control" id="deadline" value="{{ $data->deadline }}" name="deadline"
+                        autocomplete="off">
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="mb-3">
                     <label for="konten" class="form-label">Konten</label>
-                    <textarea type="text" class="form-control" id="konten" name="konten">{!! $data->konten !!}</textarea>
+                    <textarea type="text" class="form-control" id="editor1" name="konten">{!! $data->konten !!}</textarea>
                 </div>
             </div>
         </div>
@@ -56,24 +58,28 @@
 @endsection
 
 @section('script')
-<script>
-    $(document).ready(function() {
-        // create slug from judul
-        $("#promo").keyup(function() {
-            var judul = $("#promo").val();
-            var slug = judul.replace(/\s+/g, '-').toLowerCase();
-            $(".slug").val(slug);
-        });
-
-	    ClassicEditor
-            .create( document.querySelector( '#konten' ), {
-                ckfinder: {
-                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
-                }
-            } )
-            .catch( error => {
-                console.error( error );
+    <script>
+        $(document).ready(function() {
+            // create slug from judul
+            $("#promo").keyup(function() {
+                var judul = $("#promo").val();
+                var slug = judul.replace(/\s+/g, '-').toLowerCase();
+                $(".slug").val(slug);
             });
-    });
-</script>
+
+            $('#deadline').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+
+            ClassicEditor
+                .create(document.querySelector('#konten'), {
+                    ckfinder: {
+                        uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
 @endsection
