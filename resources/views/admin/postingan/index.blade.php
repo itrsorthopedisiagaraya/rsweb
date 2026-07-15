@@ -39,7 +39,7 @@
                     },
                     {
                         render: function(data, type, row, meta) {
-                            return `<img width="100" src="{{ asset('storage') }}/files/gambar_postingan/banner/${row.gambar}" alt="gambar">`;
+                            return `<img width="100" src="{{ asset('') }}/files/gambar_postingan/banner/${row.gambar}" alt="gambar">`;
                         }
                     },
                     {
