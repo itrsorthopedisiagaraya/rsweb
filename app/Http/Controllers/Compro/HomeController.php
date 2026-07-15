@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index (){
         // dokter with relation
         $spesialis = Dokter::select("spesialis")->distinct()->get();
-        $promo = Promo::all();
+        $promo = Promo::whereDate('deadline', '>=', now())->get();
         $berita = Postingan::with("kategori")->get();
         $layanan = LayananUnggulan::all();
         // dd($spesialis);
@@ -158,7 +158,7 @@ class HomeController extends Controller
 
     public function promo()
     {
-        $promo = Promo::all();
+        $promo = Promo::whereDate('deadline', '>=', now())->get();
         return view('compro.promo', [
             'promo' => $promo
         ]);
