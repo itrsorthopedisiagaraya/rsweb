@@ -23,6 +23,9 @@ use App\Http\Controllers\Admin\AboutusController;
 use App\Http\Controllers\Admin\PesanController;
 use App\Http\Controllers\Admin\UserAccessController;
 use App\Http\Controllers\Admin\KritikSaranController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -250,3 +253,17 @@ Route::put(
     '/user-access/{user}',
     [UserAccessController::class, 'update']
 )->name('user.access.update');
+
+Route::get('/generate-sitemap', function (Request $request) {
+    abort_unless(
+        hash_equals(env('SITEMAP_KEY'), $request->query('key', '')),
+        403
+    );
+
+    Artisan::call('sitemap:generate');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Sitemap generated successfully.',
+    ]);
+});

@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>RS Orthopedi SIAGA RAYA</title>
+    <title>RS Orthopedi Siaga Raya</title>
     <link rel="shortcut icon" type="image/png"
         href="https://www.rsorthopedisiagaraya.id/assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="{{ asset('assets-compro/assets') }}/css/maicons.css">
