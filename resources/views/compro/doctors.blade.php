@@ -131,18 +131,6 @@
                                                         </table>
                                                     </div>
                                                 </div>
-
-
-                                                {{-- ACTION --}}
-                                                <div class="aksi-dokter">
-                                                    <span class="profile-dokter">
-                                                        Lihat profile dokter
-                                                    </span>
-
-                                                    <span class="konsultasi">
-                                                        Jadwalkan konsultasi
-                                                    </span>
-                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -156,6 +144,13 @@
                                         </p>
                                     </div>
                                 @endif
+
+                                <div class="mt-4 px-3"
+                                    style="width: 100%; display:flex; justify-content:left; align-items:left;">
+                                    <i class="text-muted text-danger" style="font-size: 16px;">
+                                        *Jadwal praktek dokter dapat berubah sewaktu-waktu
+                                    </i>
+                                </div>
 
                                 <div class="mt-4"
                                     style="width: 100%; display:flex; justify-content:center; align-items:center;">
