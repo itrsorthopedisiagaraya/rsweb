@@ -47,27 +47,35 @@ class DokterController extends Controller
         $dataMap['Umum'] = [];
         $dataMap['Gigi'] = [];
 
-        foreach($data as $d) {
-            if(!empty($d->dokter)) {
-                foreach($dataMap as $key => $value) {
-                    if(strtolower($d->dokter->spesialis) == strtolower($key)) {
-                        $data_dokter = [
-                            'nama' => $d->dokter->nama_dokter,
-                            'jam_mulai' => $d->jamMulai->jam,
-                            'jam_selesai' => $d->jamSelesai->jam,
-                            'foto' => $d->dokter->foto
-                        ];
-    
-                        array_push($dataMap[$key], $data_dokter);
-                        usort($dataMap[$key], array($this, 'compareJamMulai'));
-                    }
-                }
+        $dataMap = [];
+
+        foreach ($data as $d) {
+            if (!$d->dokter) {
+                continue;
             }
+
+            $spesialis = $d->dokter->spesialis;
+
+            $dataMap[$spesialis][] = [
+                'id' => $d->dokter->id,
+                'nama' => $d->dokter->nama_dokter,
+                'jam_mulai' => $d->jamMulai->jam,
+                'jam_selesai' => $d->jamSelesai->jam,
+                'foto' => $d->dokter->foto,
+            ];
+        }
+
+        foreach ($dataMap as &$items) {
+            usort($items, function ($a, $b) {
+                return strcmp($a['jam_mulai'], $b['jam_mulai']);
+            });
         }
 
         $dataMap = array_filter($dataMap, function($value) {
             return !empty($value);
         });
+
+        // dd($dataMap);
         
         return view ('compro.doctors', [
             'data'=> $data->first(),
