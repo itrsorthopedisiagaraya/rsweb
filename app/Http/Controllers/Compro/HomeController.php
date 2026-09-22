@@ -158,8 +158,11 @@ class HomeController extends Controller
 
     public function promo()
     {
-        $promo = Promo::whereDate('deadline', '>=', now())->get();
-        $promo = Promo::orderBy('created_at', 'desc')->paginate(5);
+        $promo = Promo::whereDate('deadline', '>=', now())
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        // dd($promo);
         return view('compro.promo', [
             'promo' => $promo
         ]);
