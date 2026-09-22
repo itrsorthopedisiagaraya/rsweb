@@ -9,7 +9,7 @@
                 <table class="table table-bordered" id="tableJadwalDokter">
                     <thead>
                         <tr>
-                            <td>No.</td>    
+                            <td>No.</td>
                             <td>Spesialis</td>
                             <td>Nama Dokter</td>
                             <td>Jam Kerja</td>
@@ -17,15 +17,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($jadwal as $key => $dt)
-                            @if (isset($dt->dokter))  
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($jadwal as $key => $dt)
+                            @if (isset($dt->dokter))
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $no++ }}</td>
                                     <td>{{ $dt->dokter->spesialis }}</td>
                                     <td>{{ $dt->dokter->nama_dokter }}</td>
                                     <td>{{ $dt->jamMulai->jam }} - {{ $dt->jamSelesai->jam }}</td>
                                     <td>
-                                        <a type="button" class="badge badge-info badge-sm text-white" data-toggle="modal" data-target="#detailDokter{{ $dt->dokter->id }}">
+                                        <a type="button" class="badge badge-info badge-sm text-white" data-toggle="modal"
+                                            data-target="#detailDokter{{ $dt->dokter->id }}">
                                             <i class="fa fa-eye text-white"></i> Detail
                                         </a>
                                     </td>
@@ -41,7 +45,8 @@
     <!-- Modal -->
     @foreach ($jadwal as $dt)
         @if (isset($dt->dokter))
-            <div class="modal fade" id="detailDokter{{ $dt->dokter->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="detailDokter{{ $dt->dokter->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -56,12 +61,17 @@
                                     <div class="row">
                                         <div class="col-sm-5">
                                             <div class="d-flex justify-content-center align-items-center flex-column">
-                                                @if ($dt->dokter->foto == null || file_exists('files/foto-dokter/'.$dt->dokter->foto) == false)
-                                                    <img class="rounded text-center" src="{{ asset('') }}files/foto-dokter/default.jpg" alt="pict" width="150">
+                                                @if ($dt->dokter->foto == null || file_exists('files/foto-dokter/' . $dt->dokter->foto) == false)
+                                                    <img class="rounded text-center"
+                                                        src="{{ asset('') }}files/foto-dokter/default.jpg"
+                                                        alt="pict" width="150">
                                                 @else
-                                                    <img class="rounded text-center" src="{{ asset('') }}files/foto-dokter/{{ $dt->dokter->foto }}" alt="pict" width="150">
+                                                    <img class="rounded text-center"
+                                                        src="{{ asset('') }}files/foto-dokter/{{ $dt->dokter->foto }}"
+                                                        alt="pict" width="150">
                                                 @endif
-                                                <small class="text-center mt-2"><strong>{{ strtoupper($dt->dokter->nama_dokter) }}</strong></small>
+                                                <small
+                                                    class="text-center mt-2"><strong>{{ strtoupper($dt->dokter->nama_dokter) }}</strong></small>
                                             </div>
                                         </div>
                                         <div class="col-sm-7">
