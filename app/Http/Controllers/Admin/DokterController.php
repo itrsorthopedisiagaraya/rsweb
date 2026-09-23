@@ -178,6 +178,7 @@ class DokterController extends Controller
         // get dokter by id
         $dokter = Dokter::find($id);
         $jadwalHariDokter = [];
+        $perjanjian = [];
         $jam_kerja = [];
 
         if(count($jadwalExist) > 0){
@@ -190,6 +191,7 @@ class DokterController extends Controller
 
             foreach($dataHari as $hari) {
                 $jadwalHariDokter[] = $hari->hari_id;
+                $perjanjian[$hari->hari_id] = $hari->perjanjian;
             }
         }
         $hari = Hari::getAll();
@@ -201,6 +203,7 @@ class DokterController extends Controller
             'jam' => $jam,
             'jam_kerja' => $jam_kerja,
             'jadwalHariDokter' => $jadwalHariDokter,
+            'perjanjian' => $perjanjian,
         ]);
     }
 
@@ -230,6 +233,7 @@ class DokterController extends Controller
             $data->hari_id = $value;
             $data->jam_mulai_id = $request->jam_mulai[$value];
             $data->jam_selesai_id = $request->jam_selesai[$value];
+            $data->perjanjian = $request->perjanjian[$value] ?? 0;
             $data->save();
         }
 

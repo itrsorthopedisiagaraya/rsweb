@@ -43,7 +43,8 @@ class Dokter extends Model
             'dokter_id',
             'id',
             'id',
-            'hari_id'
+            'hari_id',
+            'perjanjian'
         );
     }
 

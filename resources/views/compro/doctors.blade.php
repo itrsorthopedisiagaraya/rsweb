@@ -113,6 +113,13 @@
                                                                             {{ $m['jam_mulai'] }}
                                                                             -
                                                                             {{ $m['jam_selesai'] }}
+                                                                            @if ($m['perjanjian'] == 1)
+                                                                                <br>
+                                                                                <i class="text-muted text-danger"
+                                                                                    style="font-size: 12px;">
+                                                                                    * Dengan Perjanjian
+                                                                                </i>
+                                                                            @endif
                                                                         </td>
                                                                         <td>
                                                                             <a class="btn btn-xs btn-primary text-white"
@@ -138,7 +145,7 @@
                                     <div class="mt-4 px-3"
                                         style="width: 100%; display:flex; justify-content:left; align-items:left;">
                                         <i class="text-muted text-danger" style="font-size: 16px;">
-                                            *Jadwal praktek dokter dapat berubah sewaktu-waktu
+                                            * Jadwal praktek dokter dapat berubah sewaktu-waktu
                                         </i>
                                     </div>
                                 @else

@@ -15,6 +15,7 @@ class DokterJadwal extends Model
         'hari_id',
         'jam_mulai_id',
         'jam_selesai_id',
+        'perjanjian',
     ];
 
     // join to dokter

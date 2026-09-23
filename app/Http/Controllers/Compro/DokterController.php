@@ -62,6 +62,7 @@ class DokterController extends Controller
                 'jam_mulai' => $d->jamMulai->jam,
                 'jam_selesai' => $d->jamSelesai->jam,
                 'foto' => $d->dokter->foto,
+                'perjanjian' => $d->perjanjian,
             ];
         }
 
@@ -105,7 +106,7 @@ class DokterController extends Controller
         $dokterAll = Dokter::all();
         $spesialis = DB::select('select distinct spesialis from m_dokter');
         
-        $data = Dokter::with(['hari', 'jamMulai', 'jamSelesai']);
+        $data = Dokter::with(['hari', 'jamMulai', 'jamSelesai', 'dokterJadwal']);
         if($dokter_filter) {;
             $data = $data->where('nama_dokter', 'like', '%' . $request->dokter . '%');
         }
@@ -151,7 +152,7 @@ class DokterController extends Controller
 
     public function personal($id)
     {
-        $data = Dokter::with(['hari', 'jamMulai', 'jamSelesai', 'dokterDetail'])->where('id', $id)->get();
+        $data = Dokter::with(['hari', 'jamMulai', 'jamSelesai', 'dokterDetail', 'dokterJadwal'])->where('id', $id)->get();
         return view('compro.doctor-profile', [
             'data' => $data
         ]);

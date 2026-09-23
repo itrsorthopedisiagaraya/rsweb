@@ -99,6 +99,9 @@
                                                         <tr>
                                                             <th class="text-center">Hari</th>
                                                             <th class="text-center">Jam Kerja</th>
+                                                            @if ($dt->perjanjian == 1)
+                                                                <th class="text-center">Perjanjian</th>
+                                                            @endif
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -107,6 +110,9 @@
                                                             <td class="text-center">
                                                                 {{ $dt->jamMulai->jam }} - {{ $dt->jamSelesai->jam }}
                                                             </td>
+                                                            @if ($dt->perjanjian == 1)
+                                                                <td class="text-center">Ya</td>
+                                                            @endif
                                                         </tr>
                                                     </tbody>
                                                 </table>

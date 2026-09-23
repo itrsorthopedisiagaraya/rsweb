@@ -2,12 +2,12 @@
 @section('title', 'Dashboard')
 
 @section('content')
-{{-- {{ dd($data->hari) }} --}}
-<style>
-    .bg-primary {
-        background-color: #3f73a8;
-    }
-</style>
+    {{-- {{ dd($data->hari) }} --}}
+    <style>
+        .bg-primary {
+            background-color: #3f73a8;
+        }
+    </style>
     <h3>Tetapkan Jadwal Dokter</h3>
     <hr>
     <form id="form-dokter-jadwal" action="{{ route('dokter.jadwal.update') }}" method="POST">
@@ -31,7 +31,8 @@
                         <select id="select-hari" class="form-control" id="hari" name="hari[]" multiple="multiple">
                             @foreach ($hari as $item)
                                 @if ($data != null)
-                                    <option {{ in_array($item->id, $jadwalHariDokter) ? 'selected' : '' }} value="{{ $item->id }}" data-code="BJ">{{ $item->hari }}</option>
+                                    <option {{ in_array($item->id, $jadwalHariDokter) ? 'selected' : '' }}
+                                        value="{{ $item->id }}" data-code="BJ">{{ $item->hari }}</option>
                                 @else
                                     <option value="{{ $item->id }}" data-code="BJ">{{ $item->hari }}</option>
                                 @endif
@@ -52,7 +53,8 @@
                             <div class="col-4" data-card-id="{{ $item }}">
                                 <div class="card" style="border: 1px solid #999;">
                                     <div class="card-header text-white" style="background-color: #3f73a8;">
-                                        <span class="{{ $hari->where('id', $item)->first()->hari }}"><i class="ti ti-calendar"></i>&emsp;<b>{{ $hari->where('id', $item)->first()->hari }}</b></span>
+                                        <span class="{{ $hari->where('id', $item)->first()->hari }}"><i
+                                                class="ti ti-calendar"></i>&emsp;<b>{{ $hari->where('id', $item)->first()->hari }}</b></span>
                                     </div>
                                     <div class="card-body">
                                         <div class="mb-3">
@@ -70,14 +72,16 @@
                                                             @endphp
                                                         @endif
                                                     @endforeach
-                                                    <option {{ $selected ? 'selected' : '' }} value="{{ $jamItem->id }}">{{ $jamItem->jam }}</option>
+                                                    <option {{ $selected ? 'selected' : '' }} value="{{ $jamItem->id }}">
+                                                        {{ $jamItem->jam }}</option>
                                                 @endforeach
                                             </select>
                                             <small class="error text-danger jam_mulai-error"></small>
                                         </div>
                                         <div class="mb-3">
                                             <label for="spesialis" class="form-label">Selesai</label>
-                                            <select name="jam_selesai[{{ $item }}]" class="form-control jam_selesai">
+                                            <select name="jam_selesai[{{ $item }}]"
+                                                class="form-control jam_selesai">
                                                 <option value=""></option>
                                                 @foreach ($jam as $jamItem)
                                                     @php
@@ -90,10 +94,16 @@
                                                             @endphp
                                                         @endif
                                                     @endforeach
-                                                    <option {{ $selected ? 'selected' : '' }} value="{{ $jamItem->id }}">{{ $jamItem->jam }}</option>
+                                                    <option {{ $selected ? 'selected' : '' }} value="{{ $jamItem->id }}">
+                                                        {{ $jamItem->jam }}</option>
                                                 @endforeach
                                             </select>
                                             <small class="error text-danger jam_selesai-error"></small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="checkbox" name="perjanjian[{{ $item }}]" value="1"
+                                                {{ $perjanjian[$item] == 1 ? 'checked' : '' }}>
+                                            <label for="spesialis" class="form-label">dengan Perjanjian</label>
                                         </div>
                                     </div>
                                 </div>
@@ -112,78 +122,107 @@
 
 @section('script')
     <script>
+        const perjanjian = @json($perjanjian ?? []);
+
         $(document).ready(function() {
-            $('#dokter').select2({placeholder: "Pilih Dokter"});
-            $('#select-hari').select2({placeholder: "Pilih Hari"});
-            $('.jam_mulai').select2({placeholder: "Jam Mulai"});
-            $('.jam_selesai').select2({placeholder: "Jam Selesai"});
+            $('#dokter').select2({
+                placeholder: "Pilih Dokter"
+            });
+            $('#select-hari').select2({
+                placeholder: "Pilih Hari"
+            });
+            $('.jam_mulai').select2({
+                placeholder: "Jam Mulai"
+            });
+            $('.jam_selesai').select2({
+                placeholder: "Jam Selesai"
+            });
 
-            $('#select-hari').on('change', function () {
-                const hari_val = [];
-                // clear card-wrapper
-                // $('.card-wrapper').empty();
-                // get value from select
-                $(":selected", this).each(function() {
-                    hari_val.push($(this).val());
-                });
+            $('#select-hari').on('change', function() {
+                const hari_val = $(this).val() || [];
 
-                // remove hidden
                 if (hari_val.length > 0) {
                     $('.row').removeAttr('hidden');
                 } else {
                     $('.row').attr('hidden', true);
                 }
 
-                // add element
                 hari_val.forEach(element => {
-                    let hari = $('#select-hari option[value="'+element+'"]').text();
-                    // add element jika ada value baru tanpa merubah yang sudah ada
-                    if ($(`.card-wrapper .${hari}`).length == 0) {
+                    let hari = $('#select-hari option[value="' + element + '"]').text();
+
+                    if ($(`.card-wrapper [data-card-id="${element}"]`).length === 0) {
                         $('.card-wrapper').append(`
-                            <div class="col-4" data-card-id="${element}">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <span class="${hari}"><i class="ti ti-calendar"></i>&emsp;${hari}</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <label for="spesialis" class="form-label">Mulai</label>
-                                            <select name="jam_mulai[${element}]" class="form-control jam_mulai">
-                                                <option value=""></option>
-                                                @foreach ($jam as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->jam }}</option>
-                                                @endforeach
-                                            </select>
-                                            <small class="error text-danger jam_mulai-error"></small>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="spesialis" class="form-label">Selesai</label>
-                                            <select name="jam_selesai[${element}]" class="form-control jam_selesai">
-                                                <option value=""></option>
-                                                @foreach ($jam as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->jam }}</option>
-                                                @endforeach
-                                            </select>
-                                            <small class="error text-danger jam_mulai-error"></small>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="col-4" data-card-id="${element}">
+                    <div class="card" style="border: 1px solid #999;">
+                        <div class="card-header text-white" style="background-color: #3f73a8;">
+                            <span>
+                                <i class="ti ti-calendar"></i>&emsp;<b>${hari}</b>
+                            </span>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Mulai</label>
+                                <select name="jam_mulai[${element}]"
+                                    class="form-control jam_mulai">
+                                    <option value=""></option>
+                                    @foreach ($jam as $item)
+                                        <option value="{{ $item->id }}">
+                                            {{ $item->jam }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="error text-danger jam_mulai-error"></small>
                             </div>
-                        `);
+
+                            <div class="mb-3">
+                                <label class="form-label">Selesai</label>
+                                <select name="jam_selesai[${element}]"
+                                    class="form-control jam_selesai">
+                                    <option value=""></option>
+                                    @foreach ($jam as $item)
+                                        <option value="{{ $item->id }}">
+                                            {{ $item->jam }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="error text-danger jam_selesai-error"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="checkbox"
+                                    name="perjanjian[${element}]"
+                                    value="1"
+                                    ${perjanjian[element] == 1 ? 'checked' : ''}>
+                                <label class="form-label">
+                                    dengan Perjanjian
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
                     }
                 });
 
-                // remove element
-                $('.card-wrapper .col-6').each(function() {
+                // Hapus card yang sudah tidak dipilih
+                $('.card-wrapper .col-4').each(function() {
                     let card_id = $(this).data('card-id');
+
                     if (!hari_val.includes(card_id.toString())) {
                         $(this).remove();
                     }
                 });
 
-                $('.jam_mulai').select2({placeholder: "Jam Mulai"});
-                $('.jam_selesai').select2({placeholder: "Jam Selesai"});
+                $('.jam_mulai').select2({
+                    placeholder: "Jam Mulai"
+                });
+
+                $('.jam_selesai').select2({
+                    placeholder: "Jam Selesai"
+                });
             });
+
 
             var validateMulti = function(classEl) {
                 var formDataMulti = {};
@@ -201,13 +240,13 @@
                         }
                     };
                     var errorsMulti = validate(formDataMulti, constraintsMulti);
-                    if(errorsMulti) {
-                        $.each(errorsMulti, function (key, val) { 
+                    if (errorsMulti) {
+                        $.each(errorsMulti, function(key, val) {
                             isValid = false;
                             $(element).nextAll('.error').text(val[0]);
                             // $(element).nextAll('.error').css('border', '1px solid red');
                         });
-                    }else{
+                    } else {
                         $(element).nextAll('.error').text('');
                     }
                 });
@@ -224,18 +263,18 @@
                     hari: {
                         presence: {
                             allowEmpty: false,
-                            message: 'tidak boleh kosong!' 
+                            message: 'tidak boleh kosong!'
                         }
                     }
                 }
 
-                
+
                 var jam_mulai = validateMulti('jam_mulai');
                 var jam_selesai = validateMulti('jam_selesai');
                 var errors = validate(formData, constraints);
-                if(errors || jam_mulai == false || jam_selesai == false) {
-                    $.each(errors, function (key, val) { 
-                         $(`#${key}-error`).text(val[0]);
+                if (errors || jam_mulai == false || jam_selesai == false) {
+                    $.each(errors, function(key, val) {
+                        $(`#${key}-error`).text(val[0]);
                     });
                 } else {
                     $('#form-dokter-jadwal').off('submit').submit();
