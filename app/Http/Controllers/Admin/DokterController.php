@@ -233,7 +233,7 @@ class DokterController extends Controller
             $data->hari_id = $value;
             $data->jam_mulai_id = $request->jam_mulai[$value];
             $data->jam_selesai_id = $request->jam_selesai[$value];
-            $data->perjanjian = $request->perjanjian[$value] ?? 0;
+            $data->perjanjian = $request->perjanjian[$value] ?? '0';
             $data->save();
         }
 
