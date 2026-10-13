@@ -36,7 +36,7 @@
                     @endforeach
                 </div>
 
-                 @if (count($chunksDesktop) > 1)
+                @if (count($chunksDesktop) > 1)
                     <a class="carousel-control-prev" href="#partnerCarouselDesktop" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
                     </a>
@@ -95,48 +95,59 @@
     </div>
 @endif
 <footer class="page-footer">
-  <div class="container">
-      <div class="row px-md-3">
-        <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
-          <ul class="footer-menu">
-            <div class="logo-wrapper">
-              <img src="{{ asset('assets/images/logos/LabelSiaga.png') }}" alt="logo" width="250">
+    <div class="container">
+        <div class="row px-md-3">
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
+                <ul class="footer-menu">
+                    <div class="logo-wrapper">
+                        <img src="{{ asset('assets/images/logos/LabelSiaga.png') }}" alt="logo" width="250">
+                    </div>
+                    <li class="mt-3"><span>SOSIAL MEDIA</span></li>
+                    <div class="social-mini-button mt-0">
+                        <a target="_blank"
+                            href="https://www.facebook.com/rumahsakitorthopedisiagaraya?mibextid=LQQJ4d"><span
+                                class="mai-logo-facebook-f"></span> rumahsakitorthopedisiagaraya</a>
+                        <br>
+                        <!-- <a href="#"><span class="mai-logo-twitter"></span></a> -->
+                        <a class="ml-0" target="_blank"
+                            href="https://www.instagram.com/rssiagaraya?igsh=MXIwc2g2MjY1Nm5udQ%3D%3D&utm_source=qr"><span
+                                class="mai-logo-instagram"></span> rssiagaraya</a>
+                    </div>
+                </ul>
             </div>
-            <li class="mt-3"><span>SOSIAL MEDIA</span></li>
-            <div class="social-mini-button mt-0">
-                          <a target="_blank" href="https://www.facebook.com/rumahsakitorthopedisiagaraya?mibextid=LQQJ4d"><span class="mai-logo-facebook-f"></span> rumahsakitorthopedisiagaraya</a>
-              <br>
-              <!-- <a href="#"><span class="mai-logo-twitter"></span></a> -->
-              <a class="ml-0" target="_blank" href="https://www.instagram.com/rssiagaraya?igsh=MXIwc2g2MjY1Nm5udQ%3D%3D&utm_source=qr"><span class="mai-logo-instagram"></span> rssiagaraya</a>
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
+                <ul class="footer-menu">
+                    <li>
+                        <h5>Tentang Kami</h5>
+                    </li>
+                    {{-- <li><a href="{{ route('sambutan') }}">Sambutan Direktur</a></li> --}}
+                    @foreach ($aboutus as $item)
+                        <li><a href="{{ route('about.details', $item->slug) }}">{{ $item->judul }}</a></li>
+                    @endforeach
+                </ul>
             </div>
-          </ul>
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
+                <ul class="footer-menu">
+                    <li>
+                        <h5>LAINNYA</h5>
+                    </li>
+                    <li><a href="{{ route('karir') }}">Karir</a></li>
+                    <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
+                <ul class="footer-menu">
+                    <li>
+                        <h5>KONTAK</h5>
+                    </li>
+                    <li><a href="#">Jl. Siaga Raya Kav. 4-8
+                            RT. 14/RW. 3 Pejaten Barat
+                            Pasar Minggu, Kota Jakarta Selatan
+                            Daerah Khusus Ibu Kota Jakarta 12510</a></li>
+                    <li><a href="#">(021) 7972750 <br> +62 811 899 6581</a></li>
+                    <li><span>Copyright &copy; 2025 IT RS Orthopedi Siaga Raya</span></li>
+                </ul>
+            </div>
         </div>
-        <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
-            <ul class="footer-menu">
-                <li>
-                    <h5>Tentang Kami</h5>
-                </li>
-                {{-- <li><a href="{{ route('sambutan') }}">Sambutan Direktur</a></li> --}}
-                @foreach ($aboutus as $item)
-                    <li><a href="{{ route('about.details', $item->slug) }}">{{ $item->judul }}</a></li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
-          <ul class="footer-menu">
-            <li><h5>LAINNYA</h5></li>
-            <li><a href="{{ route('karir') }}">Karir</a></li>
-            <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-6 col-lg-3 py-3 d-flex flex-column align-items-center">
-          <ul class="footer-menu">
-            <li><h5>KONTAK</h5></li>
-            <li><a href="#">Jl. Siaga Raya No.4-8, RT.14/RW.3, Pejaten Bar., Ps. Minggu, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12510</a></li>
-            <li><a href="#">+62 811 899 6581</a></li>
-            <li><span>Copyright &copy; 2025 IT RS Orthopedi Siaga Raya</span></li>
-          </ul>
-        </div>
-      </div>
     </div>
-  </footer>
+</footer>
