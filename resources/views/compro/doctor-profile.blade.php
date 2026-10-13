@@ -132,14 +132,14 @@
                 </div>
 
                 <div class="informasi-dokter">
-                    <span class="graduation">
+                    {{-- <span class="graduation">
                         <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                         <span class="mb-2"><strong>Pendidikan Dokter</strong></span>
                         @foreach ($item->dokterDetail as $dd)
                             <span>{{ strtoupper($dd->pendidikan) }}: {{ $dd->jurusan }} {{ $dd->nama_kampus }}
                                 {{ $dd->tahun_lulus }}</span>
                         @endforeach
-                    </span>
+                    </span> --}}
                     <span class="spesialis mt-4">
                         <i class="fa fa-user-md" aria-hidden="true"></i>
                         <span class="mb-2"><strong>Pendidikan Spesialis</strong></span>
@@ -173,7 +173,11 @@
                                     <td>{{ $h->hari }}</td>
                                     <td>{{ $item->jamMulai[$key]->jam }} - {{ $item->jamSelesai[$key]->jam }}</td>
                                     @if ($hasPerjanjian)
-                                        <td>Ya</td>
+                                        @foreach ($item->dokterJadwal as $jadwal)
+                                            @if ($jadwal->hari_id == $h->id)
+                                                <td>{{ $jadwal->perjanjian ? 'Ya' : 'Tidak' }}</td>
+                                            @endif
+                                        @endforeach
                                     @endif
                                 </tr>
                             @endforeach
