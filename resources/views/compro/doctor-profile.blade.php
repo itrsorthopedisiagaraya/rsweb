@@ -148,7 +148,7 @@
                     <span class="sertifikat mt-4">
                         <i class="fa fa-certificate" aria-hidden="true"></i>
                         <span class="mb-2"><strong>Seminar / Course</strong></span>
-                        <span>Tumbuh Kembang</span>
+                        <span> </span>
                     </span>
                 </div>
                 <span class="jam-praktik mt-4">
