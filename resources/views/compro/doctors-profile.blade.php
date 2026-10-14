@@ -104,9 +104,15 @@
                                                 <div class="info-profile-wrapper my-3">
                                                     <div class="image-wrapper ml-3">
                                                         @if ($item->foto == null)
-                                                            <img style="width: 100px; height: 110px;"
-                                                                src="{{ asset('files\foto-dokter\default.jpg') }}"
-                                                                alt="dokter">
+                                                            @if ($item->gender == 'L')
+                                                                <img style="width: 80%;"
+                                                                    src="{{ asset('files\foto-dokter\default.jpg') }}"
+                                                                    alt="dokter">
+                                                            @else
+                                                                <img style="width: 80%;"
+                                                                    src="{{ asset('files\foto-dokter\default-perempuan.jpeg') }}"
+                                                                    alt="dokter">
+                                                            @endif
                                                         @else
                                                             <img style="width: 100px; height: 110px;"
                                                                 src="{{ asset('') }}files/foto-dokter/{{ $item->foto }}"

@@ -119,7 +119,12 @@
             <div class="profile-dokter">
                 <div class="image-wrapper">
                     @if ($item->foto == null)
-                        <img style="width: 80%;" src="{{ asset('files\foto-dokter\default.jpg') }}" alt="dokter">
+                        @if ($item->gender == 'L')
+                            <img style="width: 80%;" src="{{ asset('files\foto-dokter\default.jpg') }}" alt="dokter">
+                        @else
+                            <img style="width: 80%;" src="{{ asset('files\foto-dokter\default-perempuan.jpeg') }}"
+                                alt="dokter">
+                        @endif
                     @else
                         <img style="width: 80%;" src="{{ asset('') }}files/foto-dokter/{{ $item->foto }}"
                             alt="doktor">
