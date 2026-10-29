@@ -123,10 +123,11 @@
                         <div class="postingan-dropdown">
                             <ul>
                                 <li><a href="{{ route('blog') }}">Berita Terkini</a></li>
-                                <li><a href="{{ route('karir') }}">Karir Otrhopedi</a></li>
+                                <li><a href="{{ route('karir') }}">Karir</a></li>
                                 <li><a href="{{ route('promo') }}">Promo</a></li>
                                 <li><a href="https://siakre.net/dashboard/public_informasi">Mutu Layanan</a></li>
-                                <li><a href="https://siakre.net/public/perpustakaan">Perpustakaan Digital</a></li>
+                                <li><a href="https://siakre.net/public/perpustakaan" target="blank">Perpustakaan
+                                        Digital</a></li>
                             </ul>
                         </div>
                     </li>
